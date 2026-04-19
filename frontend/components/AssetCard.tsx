@@ -12,9 +12,10 @@ interface Asset {
 interface AssetCardProps {
   asset: Asset;
   onAssign?: (id: number) => void;
+  onReport?: (id: number) => void;
 }
 
-export default function AssetCard({ asset, onAssign }: AssetCardProps) {
+export default function AssetCard({ asset, onAssign, onReport }: AssetCardProps) {
   const statusColor = asset.status === 'Available' 
     ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' 
     : asset.status === 'Broken'
@@ -38,14 +39,20 @@ export default function AssetCard({ asset, onAssign }: AssetCardProps) {
         <p className="text-sm text-slate-800 font-mono font-bold">{asset.serial_number || 'UNASSIGNED-000'}</p>
       </div>
       
-      <div className="mt-auto pt-5 flex gap-3 w-full border-t border-slate-50">
-        <Button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-blue-200 shadow-lg active:scale-95 transition-all text-sm" onClick={() => onAssign?.(asset.id)}>
-          Assign Asset
-        </Button>
-        <Button variant="secondary" className="px-4 bg-slate-100 text-slate-600 hover:bg-slate-200 border-none rounded-xl active:scale-95 transition-all" title="View Details">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path></svg>
-        </Button>
-      </div>
+      {(onAssign || onReport) && (
+        <div className="mt-auto pt-5 flex gap-3 w-full border-t border-slate-50">
+          {onAssign && (
+            <Button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-blue-200 shadow-lg active:scale-95 transition-all text-sm" onClick={() => onAssign(asset.id)}>
+              Assign Asset
+            </Button>
+          )}
+          {onReport && (
+            <Button className="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl shadow-red-200 shadow-lg active:scale-95 transition-all text-sm" onClick={() => onReport(asset.id)}>
+              Report Issue
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

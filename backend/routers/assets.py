@@ -69,6 +69,23 @@ def export_assets_csv(db: Session = Depends(get_db), current_user: models.User =
         headers={"Content-Disposition": "attachment; filename=tessa_assets_report.csv"}
     )
 
+@router.get("/my", response_model=list[schemas.AssetOut])
+def get_my_assets(db: Session = Depends(get_db), current_user: models.User = Depends(auth.get_current_user)):
+    """
+    **View My Assigned Assets**
+    Returns a list of assets currently assigned to the authenticated user.
+    """
+    assignments = db.query(models.Assignment).filter(
+        models.Assignment.user_id == current_user.id,
+        models.Assignment.return_date == None
+    ).all()
+    
+    asset_ids = [a.asset_id for a in assignments]
+    if not asset_ids:
+        return []
+        
+    return db.query(models.Asset).filter(models.Asset.id.in_(asset_ids)).all()
+
 @router.get("/{asset_id}", response_model=schemas.AssetOut)
 def read_asset(asset_id: int, db: Session = Depends(get_db)):
     """
