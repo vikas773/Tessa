@@ -68,9 +68,9 @@ class MaintenanceCreate(BaseModel):
 class MaintenanceOut(BaseModel):
     id: int
     asset_id: int
-    user_id: int
-    issue_description: str
-    status: str
+    user_id: Optional[int] = None
+    issue_description: Optional[str] = None
+    status: Optional[str] = "Pending"
     class Config:
         from_attributes = True
 
