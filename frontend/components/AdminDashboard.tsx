@@ -20,6 +20,7 @@ interface Stats {
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [activities, setActivities] = useState<AuditLog[]>([]);
+  const [reports, setReports] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -67,7 +68,16 @@ export default function AdminDashboard() {
           setActivities([]);
         }
       })
-      .catch(err => console.error("Failed to fetch activities:", err))
+      .catch(err => console.error("Failed to fetch activities:", err));
+
+    fetch(`${API_URL}/api/maintenance/`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        setReports(Array.isArray(data) ? data.slice(0, 5) : []);
+      })
+      .catch(err => console.error("Failed to fetch reports:", err))
       .finally(() => setLoading(false));
   }, []);
 
@@ -112,7 +122,7 @@ export default function AdminDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Recent Activity Feed */}
-        <div className="lg:col-span-2 bg-[#0f172a]/80 backdrop-blur-sm rounded-2xl border border-slate-700/50 shadow-lg shadow-black/10 overflow-hidden flex flex-col min-h-[500px]">
+        <div className="bg-[#0f172a]/80 backdrop-blur-sm rounded-2xl border border-slate-700/50 shadow-lg shadow-black/10 overflow-hidden flex flex-col min-h-[500px]">
           <div className="p-6 border-b border-slate-800 flex items-center justify-between">
             <h3 className="font-bold text-white flex items-center gap-2">
               <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -149,6 +159,41 @@ export default function AdminDashboard() {
                       </div>
                       <p className="text-xs text-slate-500 font-medium">Trace ID #{activity.id} &bull; Validated</p>
                     </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Active Maintenance Reports */}
+        <div className="bg-[#0f172a]/80 backdrop-blur-sm rounded-2xl border border-slate-700/50 shadow-lg shadow-black/10 overflow-hidden flex flex-col min-h-[500px]">
+          <div className="p-6 border-b border-slate-800 flex items-center justify-between">
+            <h3 className="font-bold text-white flex items-center gap-2">
+              <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+              Active Reports
+            </h3>
+            <Link href="/reports" className="text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors">View All &rarr;</Link>
+          </div>
+          <div className="flex-1 overflow-y-auto p-6 pr-4">
+            {loading ? (
+              <div className="flex justify-center py-12 text-slate-500 font-medium">Loading reports...</div>
+            ) : reports.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 text-slate-500 gap-4 text-center">
+                <div className="w-16 h-16 bg-slate-800/80 rounded-full flex items-center justify-center">
+                  <svg className="w-8 h-8 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <p className="font-bold text-sm tracking-tight text-slate-400 px-4">All systems clear. No active maintenance reports.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {reports.map((report) => (
+                  <div key={report.id} className="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:border-slate-600 transition-all group">
+                    <div className="flex justify-between items-start mb-2">
+                      <p className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">Asset #{report.asset_id}</p>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-md border border-amber-400/20">{report.status}</span>
+                    </div>
+                    <p className="text-xs text-slate-400 font-medium leading-relaxed italic">"{report.issue_description}"</p>
                   </div>
                 ))}
               </div>
