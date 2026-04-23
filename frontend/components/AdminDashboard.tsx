@@ -74,13 +74,6 @@ export default function AdminDashboard() {
           <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">Systems Overview</h2>
           <p className="text-base md:text-lg text-slate-400 font-medium max-w-2xl">Monitor organizational assets, reliability, and automated real-time audit logs across the fleet.</p>
         </div>
-        <div className="flex gap-4">
-          <Link href="/assets">
-            <Button className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 px-6 rounded-xl shadow-lg shadow-blue-600/20 transition-all border-none hover:-translate-y-0.5">
-              Register Asset
-            </Button>
-          </Link>
-        </div>
       </header>
 
       {/* Stats Grid */}
@@ -156,26 +149,24 @@ export default function AdminDashboard() {
             <h4 className="text-xl font-black mb-2 tracking-tight relative z-10">Asset Allocation</h4>
             <p className="text-blue-100 mb-8 text-sm font-medium relative z-10">Streamline onboarding by immediately dispatching hardware directly from inventory.</p>
             <Link href="/assets" className="relative z-10 block">
-              <Button className="w-full bg-white text-blue-700 font-extrabold py-3.5 rounded-xl hover:bg-blue-50 transition-all border-none shadow-lg shadow-black/10">
+              <button className="w-full bg-white text-blue-700 font-extrabold py-3.5 rounded-xl hover:bg-blue-50 transition-all border-none shadow-lg shadow-black/10 active:scale-95 flex items-center justify-center">
                 Open Datacenter Hub
-              </Button>
+              </button>
             </Link>
           </div>
 
-          <div className="bg-[#0f172a]/80 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50 shadow-sm text-center">
-            <h4 className="text-[10px] uppercase font-black tracking-widest text-slate-500 mb-6">Fleet Health Matrix</h4>
-            
-            <div className="relative w-32 h-32 mx-auto mb-6 flex items-center justify-center">
-              <svg className="absolute inset-0 w-full h-full -rotate-90">
-                <circle cx="64" cy="64" r="60" stroke="#1e293b" strokeWidth="8" fill="none" />
-                <circle cx="64" cy="64" r="60" stroke="#3b82f6" strokeWidth="8" fill="none" strokeDasharray="377" strokeDashoffset="7.54" className="stroke-blue-500 transition-all duration-1000" strokeLinecap="round" />
-              </svg>
-              <div className="text-center absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-3xl font-black text-white tracking-tighter">98<span className="text-lg text-slate-400 ml-0.5">%</span></span>
-              </div>
+          <div className="bg-[#0f172a]/80 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50 shadow-sm text-center flex flex-col justify-center relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-full h-1 bg-emerald-500"></div>
+            <div className="w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
             </div>
-
-            <p className="text-slate-400 text-sm font-medium">Global operational efficiency is currently optimal with very low maintenance backlog.</p>
+            <h4 className="text-xl font-black text-white mb-2 tracking-tight">Register New Asset</h4>
+            <p className="text-slate-400 text-sm font-medium mb-6">Add a new device to the corporate inventory and assign it instantly.</p>
+            <Link href="/assets" className="block mt-auto">
+              <button className="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-extrabold py-3.5 rounded-xl transition-all shadow-lg shadow-emerald-500/20 active:scale-95 flex items-center justify-center">
+                Register Asset
+              </button>
+            </Link>
           </div>
         </div>
       </div>
