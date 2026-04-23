@@ -127,7 +127,6 @@ export default function ReportsPage() {
                     <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E]">Asset Detail</th>
                     <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E]">Issue Log</th>
                     <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E]">Inventory ID</th>
-                    <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E] text-center">Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#2A2D3E]">
@@ -144,13 +143,6 @@ export default function ReportsPage() {
                         </td>
                         <td className="px-6 py-5">
                           <code className="text-[12px] font-mono font-bold text-slate-400 bg-[#0F1117] px-2 py-1 rounded border border-[#2A2D3E]">{asset?.serial_number || 'TRAC-0000'}</code>
-                        </td>
-                        <td className="px-6 py-5 text-center">
-                          <span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
-                            ticket.status === 'Closed' ? 'text-[#10B981] bg-[#10B981]/10 border-[#10B981]/20' : 'text-[#F59E0B] bg-[#F59E0B]/10 border-[#F59E0B]/20'
-                          }`}>
-                            {ticket.status}
-                          </span>
                         </td>
                       </tr>
                     );
