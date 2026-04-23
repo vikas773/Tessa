@@ -49,29 +49,29 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-slate-50 relative overflow-hidden">
-      <div className="glass w-full max-w-md p-8 rounded-2xl z-10 mx-4 shadow-2xl bg-white">
+    <main className="min-h-screen flex items-center justify-center bg-[#1e293b] relative overflow-hidden">
+      <div className="w-full max-w-md p-8 rounded-3xl z-10 mx-4 shadow-2xl shadow-black/50 bg-[#0f172a] border border-slate-700/50 backdrop-blur-sm">
         <div className="flex justify-center mb-6">
-          <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center font-bold text-white shadow-lg text-2xl">
+          <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/20 text-2xl">
             T
           </div>
         </div>
-        <h2 className="text-2xl font-bold text-center text-slate-900 mb-2">Tessa Cloud</h2>
-        <p className="text-slate-500 text-center text-sm mb-8">Sign in to manage your corporate assets</p>
+        <h2 className="text-2xl font-bold text-center text-white mb-2">Tessa Cloud</h2>
+        <p className="text-slate-400 text-center text-sm mb-8">Sign in to manage your corporate assets</p>
 
         {error && (
-          <div className="p-3 mb-4 rounded-lg bg-red-50 text-red-700 border border-red-200 text-sm font-medium text-center">
+          <div className="p-3 mb-4 rounded-lg bg-red-500/10 text-red-400 border border-red-500/20 text-sm font-medium text-center">
             {error}
           </div>
         )}
 
         <form onSubmit={handleLogin} className="flex flex-col gap-5">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Work Email</label>
+            <label className="block text-sm font-medium text-slate-400 mb-1.5">Work Email</label>
             <input 
               type="email" 
               required
-              className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all shadow-sm"
+              className="w-full bg-[#1e293b] border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all shadow-inner"
               placeholder="employee@tessacloud.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -79,18 +79,18 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+            <label className="block text-sm font-medium text-slate-400 mb-1.5">Password</label>
             <input 
               type="password" 
               required
-              className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all shadow-sm"
+              className="w-full bg-[#1e293b] border border-slate-700 rounded-lg px-4 py-2.5 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all shadow-inner"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
-          <Button type="submit" disabled={loading} className="mt-2 py-3 shadow-md">
+          <Button type="submit" disabled={loading} className="mt-2 py-3 shadow-lg shadow-blue-500/20 bg-blue-600 hover:bg-blue-500 border-none transition-all">
             {loading ? "Authenticating..." : "Sign In to Workspace"}
           </Button>
         </form>
