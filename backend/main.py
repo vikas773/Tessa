@@ -14,8 +14,19 @@ logger.info("Creating database tables if they do not exist...")
 try:
     models.Base.metadata.create_all(bind=engine)
     logger.info("Successfully connected and synced models with Supabase!")
+    
+    # Auto-migration for maintenance user_id
+    from sqlalchemy import text
+    with engine.connect() as conn:
+        logger.info("Checking for user_id column in maintenance table...")
+        res = conn.execute(text("SELECT column_name FROM information_schema.columns WHERE table_name='maintenance' AND column_name='user_id';"))
+        if not res.fetchone():
+            logger.info("Adding user_id column to maintenance table...")
+            conn.execute(text("ALTER TABLE maintenance ADD COLUMN user_id INTEGER;"))
+            conn.commit()
+            logger.info("Column added successfully.")
 except Exception as e:
-    logger.error(f"Error connecting to Supabase: {e}")
+    logger.error(f"Error syncing database: {e}")
 
 app = FastAPI(
     title="Tessa Cloud Asset Management API",
