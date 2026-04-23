@@ -64,15 +64,15 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-8 py-10 lg:px-12 lg:py-14">
+    <div className="max-w-7xl mx-auto px-4 py-6 md:px-8 md:py-10 lg:px-12 lg:py-14">
       <header className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
           <p className="text-blue-400 font-bold uppercase tracking-widest text-xs mb-2 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
             Live Dashboard
           </p>
-          <h2 className="text-4xl font-extrabold tracking-tight text-white mb-2">Systems Overview</h2>
-          <p className="text-lg text-slate-400 font-medium max-w-2xl">Monitor organizational assets, reliability, and automated real-time audit logs across the fleet.</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">Systems Overview</h2>
+          <p className="text-base md:text-lg text-slate-400 font-medium max-w-2xl">Monitor organizational assets, reliability, and automated real-time audit logs across the fleet.</p>
         </div>
         <div className="flex gap-4">
           <Link href="/assets">

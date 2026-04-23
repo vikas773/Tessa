@@ -93,11 +93,11 @@ export default function EmployeesPage() {
 
   return (
     <PageLayout>
-      <div className="max-w-7xl mx-auto px-6 py-12 relative z-10">
-        <header className="mb-10 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 py-8 md:px-6 md:py-12 relative z-10">
+        <header className="mb-8 md:mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight text-white mb-2">Employee Management</h2>
-            <p className="text-slate-400">Add, manage, and audit employee access roles.</p>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white mb-2">Employee Management</h2>
+            <p className="text-sm md:text-base text-slate-400">Add, manage, and audit employee access roles.</p>
           </div>
           {isAdmin && (
             <Button className="shadow-lg shadow-blue-500/20 bg-blue-600 hover:bg-blue-500 border-none transition-all" onClick={() => setShowModal(true)}>
@@ -106,8 +106,8 @@ export default function EmployeesPage() {
           )}
         </header>
 
-        <div className="bg-[#0f172a]/80 backdrop-blur-sm overflow-hidden rounded-xl border border-slate-700/50 shadow-lg shadow-black/10">
-          <table className="w-full text-left border-collapse">
+        <div className="bg-[#0f172a]/80 backdrop-blur-sm overflow-x-auto rounded-xl border border-slate-700/50 shadow-lg shadow-black/10">
+          <table className="w-full text-left border-collapse min-w-[600px]">
             <thead className="bg-[#1e293b] border-b border-slate-700/50">
               <tr>
                 <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-400">Name</th>

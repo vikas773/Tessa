@@ -141,11 +141,11 @@ export default function AssetsPage() {
 
   return (
     <PageLayout>
-      <div className="max-w-7xl mx-auto px-6 py-12 relative z-10">
-        <header className="mb-10 flex flex-col md:flex-row md:items-start justify-between gap-6">
+      <div className="max-w-7xl mx-auto px-4 py-8 md:px-6 md:py-12 relative z-10">
+        <header className="mb-8 md:mb-10 flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div>
-            <h2 className="text-4xl font-extrabold tracking-tight text-white mb-2">Corporate Assets</h2>
-            <p className="text-lg text-slate-400 font-medium">Browse and manage the full inventory of organizational hardware.</p>
+            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">Corporate Assets</h2>
+            <p className="text-base md:text-lg text-slate-400 font-medium">Browse and manage the full inventory of organizational hardware.</p>
           </div>
           <div className="flex gap-3">
             <Button variant="secondary" onClick={exportCSV} className="bg-[#0f172a] border-slate-700/50 text-slate-300 font-bold py-3 px-6 rounded-xl shadow-sm hover:border-slate-600 hover:text-white transition-all">

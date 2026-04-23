@@ -87,10 +87,10 @@ export default function EmployeeDashboard() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-8 py-10 lg:px-12 lg:py-14">
-      <header className="mb-12">
-        <h2 className="text-4xl font-extrabold tracking-tight text-white mb-2">My Hardware Assets</h2>
-        <p className="text-lg text-slate-400 font-medium">View your assigned equipment and report technical issues instantly.</p>
+    <div className="max-w-6xl mx-auto px-4 py-6 md:px-8 md:py-10 lg:px-12 lg:py-14">
+      <header className="mb-8 md:mb-12">
+        <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">My Hardware Assets</h2>
+        <p className="text-base md:text-lg text-slate-400 font-medium">View your assigned equipment and report technical issues instantly.</p>
       </header>
       
       {loading ? (
