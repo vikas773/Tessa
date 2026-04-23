@@ -116,10 +116,16 @@ export default function PageLayout({ children }: { children: React.ReactNode }) 
           )}
 
           {isEmployee && (
-            <Link href="/my-reports" className={`flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all border ${pathname.startsWith('/my-reports') ? 'bg-blue-600/10 text-blue-400 border-blue-500/20 shadow-[0_0_15px_-3px_rgba(59,130,246,0.15)]' : 'text-slate-400 hover:text-white hover:bg-slate-800/50 border-transparent'}`}>
-              <svg className="w-5 h-5 mx-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-              My Reports
-            </Link>
+            <>
+              <Link href="/my-reports" className={`flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all border ${pathname.startsWith('/my-reports') ? 'bg-blue-600/10 text-blue-400 border-blue-500/20 shadow-[0_0_15px_-3px_rgba(59,130,246,0.15)]' : 'text-slate-400 hover:text-white hover:bg-slate-800/50 border-transparent'}`}>
+                <svg className="w-5 h-5 mx-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                My Reports
+              </Link>
+              <Link href="/my-requests" className={`flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all border ${pathname.startsWith('/my-requests') ? 'bg-blue-600/10 text-blue-400 border-blue-500/20 shadow-[0_0_15px_-3px_rgba(59,130,246,0.15)]' : 'text-slate-400 hover:text-white hover:bg-slate-800/50 border-transparent'}`}>
+                <svg className="w-5 h-5 mx-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                My Requests
+              </Link>
+            </>
           )}
         </nav>
 
