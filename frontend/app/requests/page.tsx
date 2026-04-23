@@ -100,7 +100,7 @@ export default function AdminRequestsPage() {
                   <tr className="bg-slate-800/40">
                     <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400">Employee</th>
                     <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400">Request Details</th>
-                    <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400">Status</th>
+                    <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400 text-right">Request Date</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/50">
@@ -116,14 +116,8 @@ export default function AdminRequestsPage() {
                           <p className="text-sm font-bold text-blue-400 uppercase tracking-widest text-[10px] mb-1">{req.asset_type}</p>
                           <p className="text-sm text-slate-300 font-medium max-w-md">{req.reason}</p>
                         </td>
-                        <td className="px-6 py-5">
-                          <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
-                            req.status === 'Approved' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 
-                            req.status === 'Rejected' ? 'text-red-400 bg-red-500/10 border-red-500/20' :
-                            'text-amber-400 bg-amber-500/10 border-amber-500/20'
-                          }`}>
-                            {req.status}
-                          </span>
+                        <td className="px-6 py-5 text-right text-xs text-slate-500 font-mono">
+                          {new Date(req.request_date).toLocaleDateString()}
                         </td>
                       </tr>
                     );
