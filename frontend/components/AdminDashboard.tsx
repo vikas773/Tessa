@@ -144,26 +144,31 @@ export default function AdminDashboard() {
 
         {/* Quick Shortcuts */}
         <div className="space-y-6">
-          <div className="bg-gradient-to-br from-blue-600 to-blue-800 p-8 rounded-2xl text-white shadow-xl shadow-blue-900/20 relative overflow-hidden group border border-blue-500">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-bl-full translate-x-10 -translate-y-10 group-hover:scale-110 transition-transform duration-500"></div>
-            <h4 className="text-xl font-black mb-2 tracking-tight relative z-10">Asset Allocation</h4>
-            <p className="text-blue-100 mb-8 text-sm font-medium relative z-10">Streamline onboarding by immediately dispatching hardware directly from inventory.</p>
-            <Link href="/assets" className="relative z-10 block">
-              <button className="w-full bg-white text-blue-700 font-extrabold py-3.5 rounded-xl hover:bg-blue-50 transition-all border-none shadow-lg shadow-black/10 active:scale-95 flex items-center justify-center">
+          {/* Asset Allocation Card */}
+          <div className="bg-[#0f172a]/80 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50 shadow-sm text-center flex flex-col justify-center relative overflow-hidden group hover:border-blue-500/50 transition-colors">
+            <div className="absolute top-0 left-0 w-full h-1 bg-blue-500/50 group-hover:bg-blue-500 transition-colors"></div>
+            <div className="w-16 h-16 bg-blue-500/10 text-blue-400 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            </div>
+            <h4 className="text-xl font-black text-white mb-2 tracking-tight">Asset Allocation</h4>
+            <p className="text-slate-400 text-sm font-medium mb-6">Streamline onboarding by immediately dispatching hardware directly from inventory.</p>
+            <Link href="/assets" className="block mt-auto">
+              <button className="w-full bg-blue-500/10 hover:bg-blue-500 text-blue-400 hover:text-white border border-blue-500/20 hover:border-blue-500 font-extrabold py-3.5 rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center">
                 Open Datacenter Hub
               </button>
             </Link>
           </div>
 
-          <div className="bg-[#0f172a]/80 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50 shadow-sm text-center flex flex-col justify-center relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-full h-1 bg-emerald-500"></div>
+          {/* Register Asset Card */}
+          <div className="bg-[#0f172a]/80 backdrop-blur-sm p-8 rounded-2xl border border-slate-700/50 shadow-sm text-center flex flex-col justify-center relative overflow-hidden group hover:border-emerald-500/50 transition-colors">
+            <div className="absolute top-0 left-0 w-full h-1 bg-emerald-500/50 group-hover:bg-emerald-500 transition-colors"></div>
             <div className="w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
             </div>
             <h4 className="text-xl font-black text-white mb-2 tracking-tight">Register New Asset</h4>
             <p className="text-slate-400 text-sm font-medium mb-6">Add a new device to the corporate inventory and assign it instantly.</p>
             <Link href="/assets" className="block mt-auto">
-              <button className="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-extrabold py-3.5 rounded-xl transition-all shadow-lg shadow-emerald-500/20 active:scale-95 flex items-center justify-center">
+              <button className="w-full bg-emerald-500/10 hover:bg-emerald-500 text-emerald-400 hover:text-white border border-emerald-500/20 hover:border-emerald-500 font-extrabold py-3.5 rounded-xl transition-all shadow-lg active:scale-95 flex items-center justify-center">
                 Register Asset
               </button>
             </Link>
