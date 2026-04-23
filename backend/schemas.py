@@ -68,6 +68,7 @@ class MaintenanceCreate(BaseModel):
 class MaintenanceOut(BaseModel):
     id: int
     asset_id: int
+    user_id: int
     issue_description: str
     status: str
     class Config:

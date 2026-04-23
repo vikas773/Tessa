@@ -22,6 +22,7 @@ def create_maintenance_ticket(ticket: schemas.MaintenanceCreate, db: Session = D
     
     new_ticket = models.Maintenance(
         asset_id=ticket.asset_id,
+        user_id=current_user.id,
         issue_description=ticket.issue_description,
         status="Pending"
     )
@@ -38,6 +39,14 @@ def create_maintenance_ticket(ticket: schemas.MaintenanceCreate, db: Session = D
     db.commit()
     db.refresh(new_ticket)
     return new_ticket
+
+@router.get("/my", response_model=list[schemas.MaintenanceOut])
+def get_my_maintenance_tickets(db: Session = Depends(get_db), current_user: models.User = Depends(auth.get_current_user)):
+    """
+    **Fetch My Reports**
+    Returns a list of maintenance tickets submitted by the authenticated user.
+    """
+    return db.query(models.Maintenance).filter(models.Maintenance.user_id == current_user.id).all()
 
 @router.get("/", response_model=list[schemas.MaintenanceOut])
 def list_maintenance_tickets(db: Session = Depends(get_db), current_user: models.User = Depends(auth.get_current_user)):

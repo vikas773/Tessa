@@ -37,6 +37,7 @@ class Maintenance(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     asset_id = Column(Integer)
+    user_id = Column(Integer)
     issue_description = Column(Text, nullable=False)
     status = Column(String(50), default="Open")  # Open, Closed
 
