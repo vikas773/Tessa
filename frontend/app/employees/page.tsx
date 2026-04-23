@@ -134,99 +134,126 @@ export default function EmployeesPage() {
 
   return (
     <PageLayout>
-      <div className="max-w-7xl mx-auto px-4 py-8 md:px-6 md:py-12 relative z-10">
-        <header className="mb-8 md:mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto">
+        <header className="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white mb-2">Employee Management</h2>
-            <p className="text-sm md:text-base text-slate-400">Add, manage, and audit employee access roles.</p>
+            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">Personnel Directory</h2>
+            <p className="text-base md:text-lg text-[#6B7280] font-medium italic">"Manage organizational access, roles, and security protocols."</p>
           </div>
-          {isAdmin && (
-            <Button className="shadow-lg shadow-blue-500/20 bg-blue-600 hover:bg-blue-500 border-none transition-all" onClick={() => setShowModal(true)}>
-              + Add New Employee
-            </Button>
-          )}
+          <div className="flex gap-4">
+            {isAdmin && (
+              <button 
+                onClick={() => setShowModal(true)} 
+                className="bg-[#6366F1] hover:bg-[#818CF8] text-white font-bold py-4 px-8 rounded-[8px] shadow-xl shadow-[#6366F1]/20 transition-all active:scale-95 flex items-center gap-3 border-none text-[14px]"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Provision New Employee
+              </button>
+            )}
+          </div>
         </header>
 
-        <div className="bg-[#0f172a]/80 backdrop-blur-sm overflow-x-auto rounded-xl border border-slate-700/50 shadow-lg shadow-black/10">
-          <table className="w-full text-left border-collapse min-w-[600px]">
-            <thead className="bg-[#1e293b] border-b border-slate-700/50">
-              <tr>
-                <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-400">Name</th>
-                <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-400">Email</th>
-                <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-400">Role</th>
-                <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-400">Status</th>
-                {isAdmin && <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-400">Actions</th>}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-700/50">
-              {loading ? (
-                <tr>
-                  <td colSpan={isAdmin ? 5 : 4} className="px-6 py-8 text-center text-blue-400">Loading directory...</td>
-                </tr>
-              ) : employees.map((employee) => (
-                <tr key={employee.id} className="hover:bg-[#1e293b]/50 transition-colors bg-[#0f172a]/40">
-                  <td className="px-6 py-4 font-medium text-slate-200">{employee.name}</td>
-                  <td className="px-6 py-4 text-slate-400">{employee.email}</td>
-                  <td className="px-6 py-4">
-                    <span className="px-2 py-1 rounded-md bg-slate-800/80 text-slate-300 text-xs font-semibold border border-slate-700">
-                      {employee.role}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2 py-1 rounded-full text-xs font-semibold border ${
-                      employee.status === 'Active' 
-                        ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
-                        : 'bg-red-500/10 text-red-400 border-red-500/20'
-                    }`}>
-                      {employee.status}
-                    </span>
-                  </td>
-                  {isAdmin && (
-                    <td className="px-6 py-4">
-                      <button 
-                        onClick={() => handleEdit(employee)}
-                        className="text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors"
-                      >
-                        Edit
-                      </button>
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="bg-[#1A1D27] rounded-xl border border-[#2A2D3E] shadow-2xl overflow-hidden">
+          <div className="p-6 border-b border-[#2A2D3E] bg-[#13151F]">
+            <h3 className="text-lg font-bold text-white">Security Records Archive</h3>
+          </div>
+          
+          <div className="overflow-x-auto">
+            {loading ? (
+              <div className="flex flex-col items-center justify-center py-20 bg-[#1A1D27]">
+                <div className="w-10 h-10 border-2 border-[#6366F1] border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p className="text-[#6B7280] font-bold uppercase tracking-widest text-[10px]">Accessing Personnel Registry...</p>
+              </div>
+            ) : (
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-[#13151F]">
+                    <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E]">Identity</th>
+                    <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E]">Secure Email</th>
+                    <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E]">Privilege Level</th>
+                    <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E]">System Status</th>
+                    {isAdmin && <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E] text-right">Audit</th>}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#2A2D3E]">
+                  {employees.map((employee, index) => (
+                    <tr key={employee.id} className={`${index % 2 === 0 ? 'bg-[#1A1D27]' : 'bg-[#1E2130]'} hover:bg-[#252840] transition-colors group`}>
+                      <td className="px-6 py-5">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-[#6366F1]/10 text-[#6366F1] flex items-center justify-center font-black border border-[#6366F1]/20 text-[12px]">
+                            {employee.name.charAt(0).toUpperCase()}
+                          </div>
+                          <p className="text-[14px] font-bold text-white group-hover:text-[#6366F1] transition-colors leading-tight">{employee.name}</p>
+                        </div>
+                      </td>
+                      <td className="px-6 py-5 text-slate-400 font-medium text-[13px]">{employee.email}</td>
+                      <td className="px-6 py-5">
+                        <span className="px-2 py-1 rounded bg-[#0F1117] text-slate-400 text-[10px] font-black uppercase tracking-widest border border-[#2A2D3E]">
+                          {employee.role}
+                        </span>
+                      </td>
+                      <td className="px-6 py-5">
+                        <span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
+                          employee.status === 'Active' 
+                            ? 'text-[#10B981] bg-[#10B981]/10 border-[#10B981]/20' 
+                            : 'text-[#EF4444] bg-[#EF4444]/10 border-[#EF4444]/20'
+                        }`}>
+                          {employee.status}
+                        </span>
+                      </td>
+                      {isAdmin && (
+                        <td className="px-6 py-5 text-right">
+                          <button 
+                            onClick={() => handleEdit(employee)}
+                            className="text-[#6366F1] hover:text-[#818CF8] text-[12px] font-black uppercase tracking-widest transition-all"
+                          >
+                            Modify
+                          </button>
+                        </td>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Add Employee Modal */}
+      {/* Provision Employee Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-[#0f172a]/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[#1e293b] border border-slate-700/50 rounded-2xl w-full max-w-md p-6 shadow-2xl shadow-black/50">
-            <h3 className="text-xl font-bold mb-4 text-white">Add New Employee</h3>
-            <form onSubmit={handleAddEmployee} className="flex flex-col gap-4">
+        <div className="fixed inset-0 bg-[#0F1117]/90 backdrop-blur-md flex items-center justify-center z-[100] p-4">
+          <div className="bg-[#1A1D27] border border-[#2A2D3E] rounded-xl w-full max-w-md p-8 shadow-2xl">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-[#6366F1]/10 text-[#6366F1] flex items-center justify-center border border-[#6366F1]/20">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              </div>
+              <h3 className="text-xl font-black text-white uppercase tracking-tight">Provision Identity</h3>
+            </div>
+            <form onSubmit={handleAddEmployee} className="flex flex-col gap-5">
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Full Name</label>
-                <input required type="text" className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500/50 outline-none placeholder-slate-500" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} placeholder="Jane Doe" />
+                <label className="block text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-2">Legal Full Name</label>
+                <input required type="text" className="w-full bg-[#0F1117] text-white border border-[#2A2D3E] rounded-lg px-4 py-3 outline-none focus:border-[#6366F1] transition-all text-sm" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} placeholder="e.g. Jane Foster" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Email</label>
-                <input required type="email" className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500/50 outline-none placeholder-slate-500" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="jane@tessacloud.com" />
+                <label className="block text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-2">Corporate Email</label>
+                <input required type="email" className="w-full bg-[#0F1117] text-white border border-[#2A2D3E] rounded-lg px-4 py-3 outline-none focus:border-[#6366F1] transition-all text-sm" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="jane@tessa.com" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Temporary Password</label>
-                <input required type="password" className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500/50 outline-none placeholder-slate-500" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} placeholder="••••••••" />
+                <label className="block text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-2">Security Credential</label>
+                <input required type="password" className="w-full bg-[#0F1117] text-white border border-[#2A2D3E] rounded-lg px-4 py-3 outline-none focus:border-[#6366F1] transition-all text-sm" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} placeholder="••••••••" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Role</label>
-                <select className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500/50" value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})}>
-                  <option value="Employee">Employee</option>
-                  <option value="Manager">Manager</option>
-                  <option value="Admin">Admin</option>
+                <label className="block text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-2">Access Privilege</label>
+                <select className="w-full bg-[#0F1117] text-white border border-[#2A2D3E] rounded-lg px-4 py-3 outline-none focus:border-[#6366F1] transition-all text-sm font-bold" value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})}>
+                  <option value="Employee">Standard Employee</option>
+                  <option value="Manager">Department Manager</option>
+                  <option value="Admin">System Administrator</option>
                 </select>
               </div>
-              <div className="flex gap-3 mt-4">
-                <Button type="button" variant="secondary" className="flex-1 bg-transparent text-slate-400 border-none hover:bg-slate-800/50 transition-all" onClick={() => setShowModal(false)}>Cancel</Button>
-                <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-500 border-none shadow-lg shadow-blue-500/20">Create User</Button>
+              <div className="flex gap-4 pt-6">
+                <button type="button" className="flex-1 bg-transparent text-[#6B7280] hover:text-white font-bold py-3 transition-all text-sm border-none" onClick={() => setShowModal(false)}>Cancel</button>
+                <button type="submit" className="flex-1 bg-[#6366F1] hover:bg-[#818CF8] text-white font-bold py-3 rounded-lg shadow-lg border-none text-sm">Provision Access</button>
               </div>
             </form>
           </div>
@@ -235,47 +262,52 @@ export default function EmployeesPage() {
 
       {/* Edit Employee Modal */}
       {editingUser && (
-        <div className="fixed inset-0 bg-[#0f172a]/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[#1e293b] border border-slate-700/50 rounded-2xl w-full max-w-md p-6 shadow-2xl shadow-black/50">
-            <h3 className="text-xl font-bold mb-4 text-white">Edit Employee</h3>
-            <form onSubmit={handleUpdateEmployee} className="flex flex-col gap-4">
+        <div className="fixed inset-0 bg-[#0F1117]/90 backdrop-blur-md flex items-center justify-center z-[100] p-4">
+          <div className="bg-[#1A1D27] border border-[#2A2D3E] rounded-xl w-full max-w-md p-8 shadow-2xl">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-[#6366F1]/10 text-[#6366F1] flex items-center justify-center border border-[#6366F1]/20">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+              </div>
+              <h3 className="text-xl font-black text-white uppercase tracking-tight">Modify Identity</h3>
+            </div>
+            <form onSubmit={handleUpdateEmployee} className="flex flex-col gap-5">
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Full Name</label>
-                <input required type="text" className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500/50 outline-none" value={editFormData.name} onChange={e => setEditFormData({...editFormData, name: e.target.value})} />
+                <label className="block text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-2">Legal Full Name</label>
+                <input required type="text" className="w-full bg-[#0F1117] text-white border border-[#2A2D3E] rounded-lg px-4 py-3 outline-none focus:border-[#6366F1] transition-all text-sm" value={editFormData.name} onChange={e => setEditFormData({...editFormData, name: e.target.value})} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-400 mb-1">Email</label>
-                <input required type="email" className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500/50 outline-none" value={editFormData.email} onChange={e => setEditFormData({...editFormData, email: e.target.value})} />
+                <label className="block text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-2">Corporate Email</label>
+                <input required type="email" className="w-full bg-[#0F1117] text-white border border-[#2A2D3E] rounded-lg px-4 py-3 outline-none focus:border-[#6366F1] transition-all text-sm" value={editFormData.email} onChange={e => setEditFormData({...editFormData, email: e.target.value})} />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-1">Role</label>
-                  <select className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500/50" value={editFormData.role} onChange={e => setEditFormData({...editFormData, role: e.target.value})}>
+                  <label className="block text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-2">Privilege</label>
+                  <select className="w-full bg-[#0F1117] text-white border border-[#2A2D3E] rounded-lg px-4 py-3 outline-none focus:border-[#6366F1] transition-all text-sm font-bold" value={editFormData.role} onChange={e => setEditFormData({...editFormData, role: e.target.value})}>
                     <option value="Employee">Employee</option>
                     <option value="Manager">Manager</option>
                     <option value="Admin">Admin</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-1">Account Status</label>
-                  <select className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500/50" value={editFormData.status} onChange={e => setEditFormData({...editFormData, status: e.target.value})}>
+                  <label className="block text-[10px] font-black text-[#6B7280] uppercase tracking-widest mb-2">Status</label>
+                  <select className="w-full bg-[#0F1117] text-white border border-[#2A2D3E] rounded-lg px-4 py-3 outline-none focus:border-[#6366F1] transition-all text-sm font-bold" value={editFormData.status} onChange={e => setEditFormData({...editFormData, status: e.target.value})}>
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
                 </div>
               </div>
               
-              <div className="flex flex-col gap-3 mt-6">
-                <div className="flex gap-3">
-                  <Button type="button" variant="secondary" className="flex-1 bg-transparent text-slate-400 border-none hover:bg-slate-800/50 transition-all" onClick={() => setEditingUser(null)}>Cancel</Button>
-                  <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-500 border-none shadow-lg shadow-blue-500/20">Save Changes</Button>
+              <div className="flex flex-col gap-4 mt-8 border-t border-[#2A2D3E] pt-8">
+                <div className="flex gap-4">
+                  <button type="button" className="flex-1 bg-transparent text-[#6B7280] hover:text-white font-bold py-3 transition-all text-sm border-none" onClick={() => setEditingUser(null)}>Cancel</button>
+                  <button type="submit" className="flex-1 bg-[#6366F1] hover:bg-[#818CF8] text-white font-bold py-3 rounded-lg shadow-lg border-none text-sm">Commit Changes</button>
                 </div>
                 <button 
                   type="button" 
                   onClick={handleDeleteEmployee}
-                  className="w-full py-3 text-red-400 hover:text-white hover:bg-red-500/20 rounded-xl transition-all font-bold border border-red-500/20 hover:border-red-500 mt-2"
+                  className="w-full py-4 text-[#EF4444] hover:text-white hover:bg-[#EF4444]/10 rounded-lg transition-all font-bold border border-[#EF4444]/20 hover:border-[#EF4444] text-[13px] uppercase tracking-widest"
                 >
-                  Delete Employee Account
+                  Revoke Credentials
                 </button>
               </div>
             </form>

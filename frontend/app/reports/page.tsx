@@ -82,71 +82,72 @@ export default function ReportsPage() {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {[
-            { label: 'Total Reports', value: stats.total, color: 'text-white', bg: 'bg-slate-800', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' },
-            { label: 'Damaged', value: stats.damaged, color: 'text-red-400', bg: 'bg-red-500/10', icon: 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z' },
-            { label: 'In Repair', value: stats.inRepair, color: 'text-amber-400', bg: 'bg-amber-500/10', icon: 'M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 011-1h1a2 2 0 100-4H7a1 1 0 01-1-1V7a1 1 0 011-1h3a1 1 0 001-1V4z' },
-            { label: 'Lost', value: stats.lost, color: 'text-blue-400', bg: 'bg-blue-500/10', icon: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' },
+            { label: 'Total Tickets', value: stats.total, color: '#6366F1', bg: 'rgba(99,102,241,0.1)', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' },
+            { label: 'Critical / Broken', value: stats.damaged, color: '#EF4444', bg: 'rgba(239,68,68,0.1)', icon: 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z' },
+            { label: 'Maintenance', value: stats.inRepair, color: '#F59E0B', bg: 'rgba(245,158,11,0.1)', icon: 'M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 011-1h1a2 2 0 100-4H7a1 1 0 01-1-1V7a1 1 0 011-1h3a1 1 0 001-1V4z' },
+            { label: 'Resolved Tickets', value: tickets.filter(t => t.status === 'Closed').length, color: '#10B981', bg: 'rgba(16,185,129,0.1)', icon: 'M5 13l4 4L19 7' },
           ].map((stat, i) => (
-            <div key={i} className="bg-[#0f172a]/80 backdrop-blur-sm p-6 rounded-2xl border border-slate-700/50 shadow-sm flex flex-col gap-4 transition-transform hover:-translate-y-1 group">
-              <div className={`w-12 h-12 rounded-xl ${stat.bg} flex items-center justify-center ${stat.color} group-hover:scale-110 transition-transform duration-300 shadow-inner`}>
+            <div key={i} className="bg-[#1A1D27] p-8 rounded-xl border border-[#2A2D3E] shadow-xl flex flex-col gap-6 relative overflow-hidden group hover:border-[#6366F1]/30 transition-all">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent -mr-16 -mt-16 rounded-full blur-2xl"></div>
+              <div className="w-12 h-12 rounded-full flex items-center justify-center border transition-transform duration-500 group-hover:scale-110" style={{ color: stat.color, backgroundColor: stat.bg, borderColor: `${stat.color}33` }}>
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={stat.icon}></path></svg>
               </div>
               <div>
-                <p className="text-3xl font-black text-white mb-0.5 tracking-tight">{stat.value}</p>
-                <p className="text-[11px] font-bold uppercase tracking-widest text-slate-500">{stat.label}</p>
+                <p className="text-4xl font-bold text-white mb-1 tracking-tight">{stat.value}</p>
+                <p className="text-[12px] font-medium uppercase tracking-wider text-[#6B7280]">{stat.label}</p>
               </div>
             </div>
           ))}
         </div>
 
         {/* Reports Table */}
-        <div className="bg-[#0f172a]/80 backdrop-blur-sm rounded-3xl border border-slate-700/50 shadow-xl overflow-hidden">
-          <div className="p-6 border-b border-slate-800">
-            <h3 className="text-xl font-bold text-white">All Condition Reports</h3>
+        <div className="bg-[#1A1D27] rounded-xl border border-[#2A2D3E] shadow-2xl overflow-hidden">
+          <div className="p-6 border-b border-[#2A2D3E] flex items-center justify-between bg-[#13151F]">
+            <h3 className="text-lg font-bold text-white">Condition Reports Archive</h3>
           </div>
           
           <div className="overflow-x-auto">
             {loading ? (
-              <div className="flex flex-col items-center justify-center py-20">
-                <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-                <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Loading reports...</p>
+              <div className="flex flex-col items-center justify-center py-20 bg-[#1A1D27]">
+                <div className="w-10 h-10 border-2 border-[#6366F1] border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p className="text-[#6B7280] font-bold uppercase tracking-widest text-[10px]">Synchronizing Records...</p>
               </div>
             ) : tickets.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
-                <div className="w-20 h-20 bg-slate-800/80 rounded-full flex items-center justify-center mb-6 border border-slate-700">
-                  <svg className="w-10 h-10 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+              <div className="flex flex-col items-center justify-center py-24 px-6 text-center bg-[#1A1D27]">
+                <div className="w-20 h-20 bg-[#0F1117] rounded-full flex items-center justify-center mb-6 border border-[#2A2D3E]">
+                  <svg className="w-10 h-10 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                 </div>
-                <p className="text-white font-bold text-lg mb-2">No reports yet!</p>
-                <p className="text-slate-400 text-sm max-w-xs mx-auto">Employees can submit hardware condition reports from their dashboard.</p>
+                <p className="text-white font-bold text-lg mb-2">No Reports Filed</p>
+                <p className="text-[#6B7280] text-sm max-w-xs mx-auto">Asset health records will appear here as they are reported by the field team.</p>
               </div>
             ) : (
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-800/40">
-                    <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400">Asset</th>
-                    <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400">Issue Description</th>
-                    <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400">Serial Number</th>
-                    <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400 text-center">Status</th>
+                  <tr className="bg-[#13151F]">
+                    <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E]">Asset Detail</th>
+                    <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E]">Issue Log</th>
+                    <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E]">Inventory ID</th>
+                    <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E] text-center">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/50">
-                  {tickets.map((ticket) => {
+                <tbody className="divide-y divide-[#2A2D3E]">
+                  {tickets.map((ticket, index) => {
                     const asset = assets[ticket.asset_id];
                     return (
-                      <tr key={ticket.id} className="hover:bg-slate-800/30 transition-colors group">
+                      <tr key={ticket.id} className={`${index % 2 === 0 ? 'bg-[#1A1D27]' : 'bg-[#1E2130]'} hover:bg-[#252840] transition-colors group`}>
                         <td className="px-6 py-5">
-                          <p className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">{asset?.name || `Asset #${ticket.asset_id}`}</p>
-                          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">{asset?.type || 'Unknown'}</p>
+                          <p className="text-[14px] font-bold text-white group-hover:text-[#6366F1] transition-colors leading-tight">{asset?.name || `Asset #${ticket.asset_id}`}</p>
+                          <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider mt-1">{asset?.type || 'Standard Hardware'}</p>
                         </td>
                         <td className="px-6 py-5">
-                          <p className="text-sm text-slate-300 font-medium max-w-md">{ticket.issue_description}</p>
+                          <p className="text-[14px] text-slate-300 font-medium max-w-md leading-relaxed line-clamp-2">{ticket.issue_description}</p>
                         </td>
                         <td className="px-6 py-5">
-                          <code className="text-xs font-bold text-slate-500 bg-slate-800/50 px-2 py-1 rounded border border-slate-700/50">{asset?.serial_number || 'N/A'}</code>
+                          <code className="text-[12px] font-mono font-bold text-slate-400 bg-[#0F1117] px-2 py-1 rounded border border-[#2A2D3E]">{asset?.serial_number || 'TRAC-0000'}</code>
                         </td>
                         <td className="px-6 py-5 text-center">
-                          <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
-                            ticket.status === 'Closed' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-amber-400 bg-amber-500/10 border-amber-500/20'
+                          <span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
+                            ticket.status === 'Closed' ? 'text-[#10B981] bg-[#10B981]/10 border-[#10B981]/20' : 'text-[#F59E0B] bg-[#F59E0B]/10 border-[#F59E0B]/20'
                           }`}>
                             {ticket.status}
                           </span>

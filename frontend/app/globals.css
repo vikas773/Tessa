@@ -1,21 +1,27 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #1e293b;
-  --primary: #2563eb;
-  --primary-foreground: #ffffff;
-  --accent: #4f46e5;
-  --border: #e2e8f0;
+  --background: #0F1117;
+  --foreground: #F8FAFC;
+  --card: #1A1D27;
+  --sidebar: #13151F;
+  --primary: #6366F1;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --muted: #6B7280;
+  --border: #2A2D3E;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+* {
+  transition: all 200ms ease;
 }
 
 /* Light Card utility */

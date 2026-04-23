@@ -58,57 +58,64 @@ export default function MyReportsPage() {
 
   return (
     <PageLayout>
-      <div className="max-w-6xl mx-auto px-4 py-8 md:px-6 md:py-12 lg:px-10 lg:py-14">
-        <header className="mb-10">
-          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">My Reports History</h2>
-          <p className="text-base md:text-lg text-slate-400 font-medium">Track the status of hardware issues you've reported to IT.</p>
+  return (
+    <PageLayout>
+      <div className="max-w-6xl mx-auto">
+        <header className="mb-12">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-lg bg-[#EF4444]/10 text-[#EF4444] flex items-center justify-center border border-[#EF4444]/20">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">Maintenance Reports History</h2>
+          </div>
+          <p className="text-base md:text-lg text-[#6B7280] font-medium italic">"Track the progress of your technical assistance and repair logs."</p>
         </header>
 
-        <div className="bg-[#0f172a]/80 backdrop-blur-sm rounded-3xl border border-slate-700/50 shadow-xl overflow-hidden">
-          <div className="p-6 border-b border-slate-800">
-            <h3 className="text-xl font-bold text-white">Recent Submissions</h3>
+        <div className="bg-[#1A1D27] rounded-xl border border-[#2A2D3E] shadow-2xl overflow-hidden">
+          <div className="p-6 border-b border-[#2A2D3E] bg-[#13151F]">
+            <h3 className="text-lg font-bold text-white">Ticket Archive</h3>
           </div>
           
           <div className="overflow-x-auto">
             {loading ? (
-              <div className="flex flex-col items-center justify-center py-20">
-                <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-                <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Fetching history...</p>
+              <div className="flex flex-col items-center justify-center py-20 bg-[#1A1D27]">
+                <div className="w-10 h-10 border-2 border-[#6366F1] border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p className="text-[#6B7280] font-bold uppercase tracking-widest text-[10px]">Accessing Secure Records...</p>
               </div>
             ) : tickets.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-24 px-6 text-center">
-                <div className="w-20 h-20 bg-slate-800/80 rounded-full flex items-center justify-center mb-6 border border-slate-700">
-                  <svg className="w-10 h-10 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+              <div className="flex flex-col items-center justify-center py-24 px-6 text-center bg-[#1A1D27]">
+                <div className="w-20 h-20 bg-[#0F1117] rounded-full flex items-center justify-center mb-6 border border-[#2A2D3E]">
+                  <svg className="w-10 h-10 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                 </div>
-                <p className="text-white font-bold text-xl mb-2">No reports yet</p>
-                <p className="text-slate-400 text-sm max-w-xs mx-auto">You haven't reported any hardware issues yet. All your future reports will appear here.</p>
+                <p className="text-white font-bold text-lg mb-2">No Reports Filed</p>
+                <p className="text-[#6B7280] text-sm max-w-xs mx-auto">You haven't submitted any hardware condition reports yet. Your future submissions will appear here for tracking.</p>
               </div>
             ) : (
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-800/40">
-                    <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400">Asset</th>
-                    <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400">Issue Reported</th>
-                    <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400 text-center">Status</th>
+                  <tr className="bg-[#13151F]">
+                    <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E]">Asset Detail</th>
+                    <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E]">Issue Log</th>
+                    <th className="px-6 py-4 text-[11px] font-bold uppercase tracking-[1.5px] text-[#6B7280] border-b border-[#2A2D3E] text-center">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/50">
-                  {tickets.map((ticket) => {
+                <tbody className="divide-y divide-[#2A2D3E]">
+                  {tickets.map((ticket, index) => {
                     const asset = assets[ticket.asset_id];
                     return (
-                      <tr key={ticket.id} className="hover:bg-slate-800/30 transition-colors group">
+                      <tr key={ticket.id} className={`${index % 2 === 0 ? 'bg-[#1A1D27]' : 'bg-[#1E2130]'} hover:bg-[#252840] transition-colors group`}>
                         <td className="px-6 py-5">
-                          <p className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">{asset?.name || `Asset #${ticket.asset_id}`}</p>
-                          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">{asset?.serial_number || 'N/A'}</p>
+                          <p className="text-[14px] font-bold text-white group-hover:text-[#6366F1] transition-colors leading-tight">{asset?.name || `Asset #${ticket.asset_id}`}</p>
+                          <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider mt-1">{asset?.serial_number || 'TRAC-0000'}</p>
                         </td>
                         <td className="px-6 py-5">
-                          <p className="text-sm text-slate-300 font-medium max-w-md">{ticket.issue_description}</p>
+                          <p className="text-[14px] text-slate-300 font-medium max-w-md leading-relaxed">{ticket.issue_description}</p>
                         </td>
                         <td className="px-6 py-5 text-center">
-                          <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
-                            ticket.status === 'Closed' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 
-                            ticket.status === 'Pending' ? 'text-amber-400 bg-amber-500/10 border-amber-500/20' :
-                            'text-blue-400 bg-blue-500/10 border-blue-500/20'
+                          <span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
+                            ticket.status === 'Closed' ? 'text-[#10B981] bg-[#10B981]/10 border-[#10B981]/20' : 
+                            ticket.status === 'Pending' ? 'text-[#F59E0B] bg-[#F59E0B]/10 border-[#F59E0B]/20' :
+                            'text-[#6366F1] bg-[#6366F1]/10 border-[#6366F1]/20'
                           }`}>
                             {ticket.status}
                           </span>
@@ -122,6 +129,8 @@ export default function MyReportsPage() {
           </div>
         </div>
       </div>
+    </PageLayout>
+  );
     </PageLayout>
   );
 }

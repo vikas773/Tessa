@@ -17,58 +17,77 @@ interface AssetCardProps {
 }
 
 export default function AssetCard({ asset, onAssign, onReport, onEdit }: AssetCardProps) {
-  const statusColor = asset.status === 'Available' 
-    ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' 
-    : asset.status === 'Broken'
-    ? 'text-red-400 bg-red-400/10 border-red-400/20'
-    : 'text-amber-400 bg-amber-400/10 border-amber-400/20';
+  const getStatusColors = () => {
+    switch (asset.status) {
+      case 'Available': return { text: '#10B981', bg: 'rgba(16,185,129,0.15)', border: '#10B981', strip: '#10B981' };
+      case 'Assigned': return { text: '#10B981', bg: 'rgba(16,185,129,0.15)', border: '#10B981', strip: '#10B981' };
+      case 'Under Maintenance': return { text: '#F59E0B', bg: 'rgba(245,158,11,0.15)', border: '#F59E0B', strip: '#F59E0B' };
+      case 'Broken': return { text: '#EF4444', bg: 'rgba(239,68,68,0.15)', border: '#EF4444', strip: '#EF4444' };
+      default: return { text: '#6B7280', bg: 'rgba(107,114,128,0.15)', border: '#6B7280', strip: '#6B7280' };
+    }
+  };
+
+  const getIcon = () => {
+    return (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+      </svg>
+    );
+  };
+
+  const colors = getStatusColors();
 
   return (
-    <div className="bg-[#0f172a]/80 backdrop-blur-sm rounded-2xl p-6 hover:shadow-lg hover:shadow-black/20 hover:-translate-y-1 transition-all duration-300 flex flex-col gap-5 group border border-slate-700/50 relative">
-      <div className="flex justify-between items-start gap-4">
-        <div className="min-w-0 flex-1">
-          <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">{asset.name}</h3>
-          <p className="text-sm font-semibold text-blue-500 uppercase tracking-wider mt-1">{asset.type}</p>
+    <div className="group relative bg-[#1A1D27] rounded-[12px] border border-[#2A2D3E] hover:border-[#6366F1] hover:shadow-[0_0_0_1px_#6366F1] transition-all duration-200 overflow-hidden flex flex-col h-full shadow-lg shadow-black/20">
+      {/* Left Status Strip */}
+      <div className="absolute left-0 top-0 bottom-0 w-[4px]" style={{ backgroundColor: colors.strip }}></div>
+      
+      <div className="p-6 flex flex-col h-full pl-7">
+        <div className="flex justify-between items-start mb-6">
+          <div className="w-10 h-10 rounded-lg bg-[#0F1117] border border-[#2A2D3E] flex items-center justify-center text-[#6366F1] group-hover:scale-110 transition-transform">
+            {getIcon()}
+          </div>
+          <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border transition-colors" style={{ color: colors.text, backgroundColor: colors.bg, borderColor: `${colors.text}33` }}>
+            {asset.status}
+          </span>
         </div>
-        <span className={`shrink-0 whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border ${statusColor}`}>
-          {asset.status}
-        </span>
-      </div>
-      
-      <div className="p-4 rounded-xl bg-[#1e293b]/50 border border-slate-700/50 group-hover:bg-[#1e293b]/80 group-hover:border-slate-600 transition-colors shadow-inner">
-        <p className="text-[10px] text-slate-500 uppercase tracking-widest font-black mb-1.5">Asset Inventory ID</p>
-        <p className="text-sm text-slate-300 font-mono font-bold">{asset.serial_number || 'UNASSIGNED-000'}</p>
-      </div>
-      
-      {(onAssign || onReport || onEdit) && (
-        <div className="mt-auto pt-2 flex flex-col gap-3">
-          {onEdit && (
-            <button 
-              onClick={() => onEdit(asset)}
-              className="w-full flex items-center justify-center gap-2 bg-blue-600/10 hover:bg-blue-600 border border-blue-500/20 hover:border-blue-500 text-blue-400 hover:text-white font-bold py-2.5 rounded-xl transition-all shadow-lg text-sm"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-              Edit Asset Details
-            </button>
-          )}
+
+        <div className="mb-auto">
+          <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-[2px] mb-1.5 leading-none">
+            {asset.type}
+          </p>
+          <h3 className="text-[16px] font-bold text-white leading-tight mb-4 group-hover:text-[#6366F1] transition-colors">
+            {asset.name}
+          </h3>
+          
+          <div className="bg-[#0F1117] rounded-lg p-3 border border-[#2A2D3E] mb-6">
+            <p className="text-[9px] font-bold text-[#6B7280] uppercase tracking-[1.5px] mb-1">Serial Number</p>
+            <code className="text-[12px] font-mono font-bold text-slate-300 tracking-tight">
+              {asset.serial_number || 'UNASSIGNED'}
+            </code>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-3">
           {onAssign && (
-            <Button 
+            <button 
               onClick={() => onAssign(asset.id)}
-              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20 border-none"
+              className="w-full bg-[#6366F1] hover:bg-[#818CF8] text-white font-medium py-3 px-4 rounded-[8px] text-[14px] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#6366F1]/10 active:scale-95"
             >
               Manage Asset
-            </Button>
+            </button>
           )}
-          {onReport && asset.status !== 'Under Maintenance' && asset.status !== 'Broken' && (
-            <Button 
+          {onReport && asset.status !== 'Under Maintenance' && (
+            <button 
               onClick={() => onReport(asset.id)}
-              className="w-full bg-red-500/10 hover:bg-red-500 border border-red-500/20 hover:border-red-500 text-red-400 hover:text-white font-bold py-2.5 rounded-xl transition-all shadow-lg"
+              className="w-full bg-[#EF4444] hover:bg-[#F87171] text-white font-medium py-3 px-4 rounded-[8px] text-[14px] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#EF4444]/10 active:scale-95"
             >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
               Report Issue
-            </Button>
+            </button>
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
