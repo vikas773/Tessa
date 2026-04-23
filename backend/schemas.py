@@ -40,6 +40,12 @@ class AssetOut(BaseModel):
     class Config:
         from_attributes = True
 
+class AssetUpdate(BaseModel):
+    name: Optional[str] = None
+    type: Optional[str] = None
+    serial_number: Optional[str] = None
+    status: Optional[str] = None
+
 # Assignments
 class AssignmentCreate(BaseModel):
     user_id: int

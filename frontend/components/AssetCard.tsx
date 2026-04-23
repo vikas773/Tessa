@@ -13,6 +13,7 @@ interface AssetCardProps {
   asset: Asset;
   onAssign?: (id: number) => void;
   onReport?: (id: number) => void;
+  onEdit?: (asset: Asset) => void;
 }
 
 export default function AssetCard({ asset, onAssign, onReport }: AssetCardProps) {
@@ -39,8 +40,17 @@ export default function AssetCard({ asset, onAssign, onReport }: AssetCardProps)
         <p className="text-sm text-slate-300 font-mono font-bold">{asset.serial_number || 'UNASSIGNED-000'}</p>
       </div>
       
-      {(onAssign || onReport) && (
+      {(onAssign || onReport || onEdit) && (
         <div className="mt-auto pt-2 grid grid-cols-2 gap-3">
+          {onEdit && (
+            <button 
+              onClick={() => onEdit(asset)}
+              className="text-blue-400 hover:text-blue-300 text-sm font-bold transition-colors absolute top-6 right-6 flex items-center gap-1.5 bg-slate-800/50 px-3 py-1.5 rounded-lg border border-slate-700/50 hover:bg-slate-800"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+              Edit
+            </button>
+          )}
           {onAssign && (
             <Button 
               onClick={() => onAssign(asset.id)}

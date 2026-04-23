@@ -41,6 +41,15 @@ export default function AssetsPage() {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [assetForm, setAssetForm] = useState({ name: '', type: 'Laptop', serial_number: '' });
 
+  // Edit asset state
+  const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
+  const [editAssetForm, setEditAssetForm] = useState({
+    name: '',
+    type: '',
+    serial_number: '',
+    status: ''
+  });
+
   const fetchAssets = useCallback(async () => {
     try {
       const params = new URLSearchParams();
@@ -82,6 +91,50 @@ export default function AssetsPage() {
     if (!isAdmin) return alert("Only an administrator can assign assets.");
     setSelectedAssetId(assetId);
     setShowAssignModal(true);
+  };
+
+  const triggerEditModal = (asset: Asset) => {
+    setEditingAsset(asset);
+    setEditAssetForm({
+      name: asset.name,
+      type: asset.type,
+      serial_number: asset.serial_number || '',
+      status: asset.status
+    });
+  };
+
+  const handleUpdateAsset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingAsset) return;
+
+    try {
+      const res = await fetch(`${API_URL}/api/assets/${editingAsset.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editAssetForm)
+      });
+      if (!res.ok) throw new Error("Failed to update asset");
+      setEditingAsset(null);
+      fetchAssets();
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
+  const handleDeleteAsset = async () => {
+    if (!editingAsset) return;
+    if (!confirm(`Are you sure you want to delete ${editingAsset.name}? This action cannot be undone.`)) return;
+
+    try {
+      const res = await fetch(`${API_URL}/api/assets/${editingAsset.id}`, {
+        method: 'DELETE'
+      });
+      if (!res.ok) throw new Error("Failed to delete asset");
+      setEditingAsset(null);
+      fetchAssets();
+    } catch (err: any) {
+      alert(err.message);
+    }
   };
 
   const submitAssign = async (e: React.FormEvent) => {
@@ -204,7 +257,12 @@ export default function AssetsPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {assets.map((asset) => (
-              <AssetCard key={asset.id} asset={asset} onAssign={triggerAssignModal} />
+              <AssetCard 
+                key={asset.id} 
+                asset={asset} 
+                onAssign={triggerAssignModal} 
+                onEdit={isAdmin ? triggerEditModal : undefined} 
+              />
             ))}
           </div>
         )}
@@ -262,6 +320,59 @@ export default function AssetsPage() {
               <div className="flex gap-3 mt-4">
                 <Button type="button" variant="secondary" className="flex-1 bg-transparent text-slate-400 border-none hover:bg-slate-800/50 transition-all" onClick={() => setShowRegisterModal(false)}>Cancel</Button>
                 <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-500 border-none shadow-lg shadow-blue-500/20">Register Asset</Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      {/* Edit Asset Modal */}
+      {editingAsset && (
+        <div className="fixed inset-0 bg-[#0f172a]/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-[#1e293b] border border-slate-700/50 rounded-2xl w-full max-w-md p-6 shadow-2xl shadow-black/50">
+            <h3 className="text-xl font-bold mb-4 text-white">Edit Asset</h3>
+            <form onSubmit={handleUpdateAsset} className="flex flex-col gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-400 mb-1">Asset Name / Model</label>
+                <input required type="text" className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500/50" value={editAssetForm.name} onChange={e => setEditAssetForm({...editAssetForm, name: e.target.value})} />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-400 mb-1">Serial Number</label>
+                <input required type="text" className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500/50" value={editAssetForm.serial_number} onChange={e => setEditAssetForm({...editAssetForm, serial_number: e.target.value})} />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-400 mb-1">Category</label>
+                  <select className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500/50" value={editAssetForm.type} onChange={e => setEditAssetForm({...editAssetForm, type: e.target.value})}>
+                    <option value="Laptop">Laptop</option>
+                    <option value="Desktop">Desktop</option>
+                    <option value="Peripherals">Peripherals</option>
+                    <option value="Furniture">Furniture</option>
+                    <option value="Mobile">Mobile</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-400 mb-1">Status</label>
+                  <select className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500/50" value={editAssetForm.status} onChange={e => setEditAssetForm({...editAssetForm, status: e.target.value})}>
+                    <option value="Available">Available</option>
+                    <option value="Assigned">Assigned</option>
+                    <option value="Broken">Broken</option>
+                    <option value="Under Maintenance">In Repair</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div className="flex flex-col gap-3 mt-6">
+                <div className="flex gap-3">
+                  <Button type="button" variant="secondary" className="flex-1 bg-transparent text-slate-400 border-none hover:bg-slate-800/50 transition-all" onClick={() => setEditingAsset(null)}>Cancel</Button>
+                  <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-500 border-none shadow-lg shadow-blue-500/20">Save Changes</Button>
+                </div>
+                <button 
+                  type="button" 
+                  onClick={handleDeleteAsset}
+                  className="w-full py-3 text-red-400 hover:text-white hover:bg-red-500/20 rounded-xl transition-all font-bold border border-red-500/20 hover:border-red-500 mt-2"
+                >
+                  Delete Asset Permanently
+                </button>
               </div>
             </form>
           </div>

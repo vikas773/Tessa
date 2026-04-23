@@ -110,6 +110,24 @@ def delete_asset(asset_id: int, db: Session = Depends(get_db)):
     db.commit()
     return {"message": "Asset successfully deleted"}
 
+@router.put("/{asset_id}", response_model=schemas.AssetOut)
+def update_asset(asset_id: int, asset_update: schemas.AssetUpdate, db: Session = Depends(get_db)):
+    """
+    **Update asset details**
+    Database Action: UPDATE assets table SET name, type, serial_number, or status WHERE id = given id.
+    """
+    db_asset = db.query(models.Asset).filter(models.Asset.id == asset_id).first()
+    if not db_asset:
+        raise HTTPException(status_code=404, detail="Asset not found")
+    
+    update_data = asset_update.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_asset, key, value)
+    
+    db.commit()
+    db.refresh(db_asset)
+    return db_asset
+
 @router.put("/{asset_id}/mark-broken", response_model=schemas.AssetOut)
 def mark_asset_broken(asset_id: int, db: Session = Depends(get_db)):
     """
