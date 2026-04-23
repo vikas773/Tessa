@@ -187,10 +187,6 @@ export default function AssetsPage() {
     }
   };
 
-  const exportCSV = () => {
-    const token = localStorage.getItem('tessa_token');
-    window.location.href = `${API_URL}/api/assets/export/csv?Authorization=Bearer ${token}`;
-  };
 
   return (
     <PageLayout>
@@ -201,9 +197,6 @@ export default function AssetsPage() {
             <p className="text-base md:text-lg text-slate-400 font-medium">Browse and manage the full inventory of organizational hardware.</p>
           </div>
           <div className="flex gap-3">
-            <Button variant="secondary" onClick={exportCSV} className="bg-[#0f172a] border-slate-700/50 text-slate-300 font-bold py-3 px-6 rounded-xl shadow-sm hover:border-slate-600 hover:text-white transition-all">
-              Export CSV
-            </Button>
             {isAdmin && (
               <Button onClick={() => setShowRegisterModal(true)} className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-blue-500/20 border-none">
                 + Register New Asset
