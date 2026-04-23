@@ -29,23 +29,26 @@ export default function ReportsPage() {
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
       try {
-        const [mRes, aRes] = await Promise.all([
-          fetch(`${API_URL}/api/maintenance`, { headers: { 'Authorization': `Bearer ${token}` } }),
-          fetch(`${API_URL}/api/assets/`, { headers: { 'Authorization': `Bearer ${token}` } })
-        ]);
+        const mRes = await fetch(`${API_URL}/api/maintenance`, { headers: { 'Authorization': `Bearer ${token}` } });
+        const aRes = await fetch(`${API_URL}/api/assets`, { headers: { 'Authorization': `Bearer ${token}` } });
 
-        const mData = await mRes.json();
-        const aData = await aRes.json();
-
-        setTickets(Array.isArray(mData) ? mData : []);
-        
-        const assetMap: Record<number, Asset> = {};
-        if (Array.isArray(aData)) {
-          aData.forEach((a: Asset) => {
-            assetMap[a.id] = a;
-          });
+        if (mRes.ok) {
+          const mData = await mRes.json();
+          setTickets(Array.isArray(mData) ? mData : []);
+        } else {
+          console.error("Maintenance fetch failed:", mRes.status);
         }
-        setAssets(assetMap);
+
+        if (aRes.ok) {
+          const aData = await aRes.json();
+          const assetMap: Record<number, Asset> = {};
+          if (Array.isArray(aData)) {
+            aData.forEach((a: Asset) => {
+              assetMap[a.id] = a;
+            });
+          }
+          setAssets(assetMap);
+        }
       } catch (err) {
         console.error("Failed to fetch reports data:", err);
       } finally {

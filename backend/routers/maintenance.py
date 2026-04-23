@@ -50,9 +50,8 @@ def get_my_maintenance_tickets(db: Session = Depends(get_db), current_user: mode
 
 @router.get("", response_model=list[schemas.MaintenanceOut])
 @router.get("/", response_model=list[schemas.MaintenanceOut])
-def list_maintenance_tickets(db: Session = Depends(get_db), current_user: models.User = Depends(auth.get_current_user)):
+def list_maintenance_tickets(db: Session = Depends(get_db)):
     """
     **List all maintenance tickets (Admin/Manager)**
     """
-    # For now, we allow any logged in user to see all, but let's be explicit
     return db.query(models.Maintenance).order_by(models.Maintenance.id.desc()).all()
