@@ -12,6 +12,7 @@ interface Asset {
 
 export default function EmployeeDashboard() {
   const [assets, setAssets] = useState<Asset[]>([]);
+  const [requests, setRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Modal State
@@ -21,27 +22,33 @@ export default function EmployeeDashboard() {
   const [issueDescription, setIssueDescription] = useState('');
   const [requestFormData, setRequestFormData] = useState({ asset_type: 'Laptop', reason: '' });
 
-  const fetchMyAssets = useCallback(async () => {
+  const fetchMyData = useCallback(async () => {
     const token = localStorage.getItem('tessa_token');
     if (!token) return;
 
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
     try {
-      const res = await fetch(`${API_URL}/api/assets/my`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await res.json();
-      setAssets(Array.isArray(data) ? data : []);
+      setLoading(true);
+      const [assetsRes, requestsRes] = await Promise.all([
+        fetch(`${API_URL}/api/assets/my`, { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch(`${API_URL}/api/requests/my`, { headers: { 'Authorization': `Bearer ${token}` } })
+      ]);
+
+      const assetsData = await assetsRes.json();
+      const requestsData = await requestsRes.json();
+
+      setAssets(Array.isArray(assetsData) ? assetsData : []);
+      setRequests(Array.isArray(requestsData) ? requestsData : []);
     } catch (err) {
-      console.error("Failed to fetch my assets:", err);
+      console.error("Failed to fetch my data:", err);
     } finally {
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchMyAssets();
-  }, [fetchMyAssets]);
+    fetchMyData();
+  }, [fetchMyData]);
 
   const triggerReportIssue = (assetId: number) => {
     setSelectedAssetId(assetId);
@@ -76,7 +83,7 @@ export default function EmployeeDashboard() {
       setShowReportModal(false);
       setIssueDescription('');
       setSelectedAssetId(null);
-      fetchMyAssets(); // Refresh assets to show updated status
+      fetchMyData(); // Refresh data to show updated status
       alert("Issue reported successfully.");
     } catch (err: any) {
       alert(err.message);
@@ -101,6 +108,7 @@ export default function EmployeeDashboard() {
       if (res.ok) {
         setShowRequestModal(false);
         setRequestFormData({ asset_type: 'Laptop', reason: '' });
+        fetchMyData(); // Refresh requests list
         alert("Your asset request has been submitted successfully.");
       }
     } catch (err) {
@@ -148,6 +156,62 @@ export default function EmployeeDashboard() {
           ))}
         </div>
       )}
+
+      {/* Asset Requests Section */}
+      <div className="mt-20">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+          </div>
+          <h3 className="text-2xl font-black text-white">My Hardware Requests</h3>
+        </div>
+
+        {requests.length === 0 ? (
+          <div className="bg-[#0f172a]/40 border border-slate-700/30 rounded-3xl p-10 text-center">
+            <p className="text-slate-500 font-medium italic">You haven't submitted any hardware requests yet.</p>
+          </div>
+        ) : (
+          <div className="bg-[#0f172a]/80 backdrop-blur-sm rounded-3xl border border-slate-700/50 shadow-xl overflow-hidden">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-800/40">
+                  <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400">Request Type</th>
+                  <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400">Reason</th>
+                  <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400">Date</th>
+                  <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400 text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800/50">
+                {requests.map((req) => (
+                  <tr key={req.id} className="hover:bg-slate-800/30 transition-colors group">
+                    <td className="px-6 py-5">
+                      <p className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">{req.asset_type}</p>
+                      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-0.5">Ticket #{req.id}</p>
+                    </td>
+                    <td className="px-6 py-5">
+                      <p className="text-sm text-slate-300 font-medium truncate max-w-xs">{req.reason}</p>
+                    </td>
+                    <td className="px-6 py-5">
+                      <p className="text-sm text-slate-400 font-medium">
+                        {new Date(req.request_date).toLocaleDateString()}
+                      </p>
+                    </td>
+                    <td className="px-6 py-5 text-center">
+                      <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
+                        req.status === 'Approved' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 
+                        req.status === 'Rejected' ? 'text-red-400 bg-red-500/10 border-red-500/20' :
+                        'text-amber-400 bg-amber-500/10 border-amber-500/20 shadow-[0_0_10px_-2px_rgba(245,158,11,0.2)]'
+                      }`}>
+                        {req.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
 
       {/* Request Asset Modal */}
       {showRequestModal && (
