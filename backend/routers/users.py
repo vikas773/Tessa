@@ -90,6 +90,38 @@ def update_user_role(user_id: int, new_role: str, db: Session = Depends(get_db))
     db.refresh(user)
     return user
 
+@router.put("/{user_id}", response_model=schemas.UserOut)
+def update_user(user_id: int, user_update: schemas.UserUpdate, db: Session = Depends(get_db)):
+    """
+    **Update user details**
+    Database Action: UPDATE users table SET name, email, role, or status WHERE id = given id.
+    """
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    update_data = user_update.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(db_user, key, value)
+    
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    """
+    **Delete user**
+    Database Action: DELETE row from users table WHERE id = given id.
+    """
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    db.delete(db_user)
+    db.commit()
+    return None
+
 @router.put("/{user_id}/deactivate", response_model=schemas.UserOut)
 def deactivate_user(user_id: int, db: Session = Depends(get_db)):
     """

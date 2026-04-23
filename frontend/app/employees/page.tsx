@@ -26,6 +26,15 @@ export default function EmployeesPage() {
     role: 'Employee'
   });
 
+  // Edit employee form state
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [editFormData, setEditFormData] = useState({
+    name: '',
+    email: '',
+    role: '',
+    status: ''
+  });
+
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
   const fetchEmployees = async () => {
@@ -48,23 +57,55 @@ export default function EmployeesPage() {
     fetchEmployees();
   }, []);
 
-  const handleDeactivate = async (id: number) => {
-    if (!currentUser || currentUser.role !== 'Admin') {
-      return alert("Only administrators can deactivate accounts.");
-    }
+  const handleEdit = (user: User) => {
+    setEditingUser(user);
+    setEditFormData({
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      status: user.status
+    });
+  };
+
+  const handleUpdateEmployee = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingUser) return;
     
     try {
-      const res = await fetch(`${API_URL}/api/users/${id}/deactivate`, {
-        method: 'PUT'
+      const res = await fetch(`${API_URL}/api/users/${editingUser.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editFormData)
       });
       if (res.ok) {
-        setEmployees(employees.map(e => e.id === id ? { ...e, status: 'Inactive' } : e));
+        setEditingUser(null);
+        fetchEmployees();
       } else {
         const errData = await res.json();
-        alert(errData.detail || "Failed to deactivate");
+        alert(errData.detail || "Failed to update user");
       }
     } catch (err) {
-      console.error("Error deactivating user", err);
+      console.error("Error updating user", err);
+    }
+  };
+
+  const handleDeleteEmployee = async () => {
+    if (!editingUser) return;
+    if (!confirm(`Are you sure you want to delete ${editingUser.name}? This action cannot be undone.`)) return;
+
+    try {
+      const res = await fetch(`${API_URL}/api/users/${editingUser.id}`, {
+        method: 'DELETE'
+      });
+      if (res.ok) {
+        setEditingUser(null);
+        fetchEmployees();
+      } else {
+        const errData = await res.json();
+        alert(errData.detail || "Failed to delete user");
+      }
+    } catch (err) {
+      console.error("Error deleting user", err);
     }
   };
 
@@ -141,14 +182,12 @@ export default function EmployeesPage() {
                     </span>
                   </td>
                   {isAdmin && (
-                    <td className="px-6 py-4 flex gap-2">
-                      <button className="text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors">Edit</button>
+                    <td className="px-6 py-4">
                       <button 
-                        onClick={() => handleDeactivate(employee.id)}
-                        className="text-red-400 hover:text-red-300 text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled={employee.status === 'Inactive'}
+                        onClick={() => handleEdit(employee)}
+                        className="text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors"
                       >
-                        Deactivate
+                        Edit
                       </button>
                     </td>
                   )}
@@ -159,6 +198,7 @@ export default function EmployeesPage() {
         </div>
       </div>
 
+      {/* Add Employee Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-[#0f172a]/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-[#1e293b] border border-slate-700/50 rounded-2xl w-full max-w-md p-6 shadow-2xl shadow-black/50">
@@ -187,6 +227,56 @@ export default function EmployeesPage() {
               <div className="flex gap-3 mt-4">
                 <Button type="button" variant="secondary" className="flex-1 bg-transparent text-slate-400 border-none hover:bg-slate-800/50 transition-all" onClick={() => setShowModal(false)}>Cancel</Button>
                 <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-500 border-none shadow-lg shadow-blue-500/20">Create User</Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Employee Modal */}
+      {editingUser && (
+        <div className="fixed inset-0 bg-[#0f172a]/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-[#1e293b] border border-slate-700/50 rounded-2xl w-full max-w-md p-6 shadow-2xl shadow-black/50">
+            <h3 className="text-xl font-bold mb-4 text-white">Edit Employee</h3>
+            <form onSubmit={handleUpdateEmployee} className="flex flex-col gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-400 mb-1">Full Name</label>
+                <input required type="text" className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500/50 outline-none" value={editFormData.name} onChange={e => setEditFormData({...editFormData, name: e.target.value})} />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-400 mb-1">Email</label>
+                <input required type="email" className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500/50 outline-none" value={editFormData.email} onChange={e => setEditFormData({...editFormData, email: e.target.value})} />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-400 mb-1">Role</label>
+                  <select className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500/50" value={editFormData.role} onChange={e => setEditFormData({...editFormData, role: e.target.value})}>
+                    <option value="Employee">Employee</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Admin">Admin</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-400 mb-1">Account Status</label>
+                  <select className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-emerald-500/50" value={editFormData.status} onChange={e => setEditFormData({...editFormData, status: e.target.value})}>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div className="flex flex-col gap-3 mt-6">
+                <div className="flex gap-3">
+                  <Button type="button" variant="secondary" className="flex-1 bg-transparent text-slate-400 border-none hover:bg-slate-800/50 transition-all" onClick={() => setEditingUser(null)}>Cancel</Button>
+                  <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-500 border-none shadow-lg shadow-blue-500/20">Save Changes</Button>
+                </div>
+                <button 
+                  type="button" 
+                  onClick={handleDeleteEmployee}
+                  className="w-full py-3 text-red-400 hover:text-white hover:bg-red-500/20 rounded-xl transition-all font-bold border border-red-500/20 hover:border-red-500 mt-2"
+                >
+                  Delete Employee Account
+                </button>
               </div>
             </form>
           </div>
