@@ -31,21 +31,35 @@ export default function AdminDashboard() {
     fetch(`${API_URL}/api/dashboard/stats`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch stats');
+        return res.json();
+      })
       .then(data => {
-        const isDbEmpty = !data.total_assets || data.total_assets === 0;
-        setStats(isDbEmpty ? {
-          total_assets: 3,
-          available_assets: 2,
+        setStats({
+          total_assets: data.total_assets || 0,
+          available_assets: data.available_assets || 0,
+          assigned_assets: data.assigned_assets || 0,
+          maintenance_assets: data.maintenance_assets || 0
+        });
+      })
+      .catch(err => {
+        console.error("Error fetching stats:", err);
+        setStats({
+          total_assets: 0,
+          available_assets: 0,
           assigned_assets: 0,
-          maintenance_assets: 1
-        } : data);
+          maintenance_assets: 0
+        });
       });
 
     fetch(`${API_URL}/api/audit-logs/?limit=10`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch activities');
+        return res.json();
+      })
       .then(data => {
         if (Array.isArray(data)) {
           setActivities(data);
