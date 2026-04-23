@@ -118,11 +118,11 @@ export default function PageLayout({ children }: { children: React.ReactNode }) 
           {isEmployee && (
             <>
               <Link href="/my-reports" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all border-l-2 ${pathname.startsWith('/my-reports') ? 'text-[#6366F1] border-[#6366F1] bg-[#6366F1]/5' : 'text-slate-400 hover:text-white hover:bg-[#1A1D27] border-transparent'}`}>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                 My Reports
               </Link>
               <Link href="/my-requests" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all border-l-2 ${pathname.startsWith('/my-requests') ? 'text-[#6366F1] border-[#6366F1] bg-[#6366F1]/5' : 'text-slate-400 hover:text-white hover:bg-[#1A1D27] border-transparent'}`}>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                 My Requests
               </Link>
             </>
