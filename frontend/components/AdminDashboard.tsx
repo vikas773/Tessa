@@ -70,7 +70,7 @@ export default function AdminDashboard() {
       })
       .catch(err => console.error("Failed to fetch activities:", err));
 
-    fetch(`${API_URL}/api/maintenance/`, {
+    fetch(`${API_URL}/api/maintenance`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())

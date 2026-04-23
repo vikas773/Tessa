@@ -30,7 +30,7 @@ export default function ReportsPage() {
 
       try {
         const [mRes, aRes] = await Promise.all([
-          fetch(`${API_URL}/api/maintenance/`, { headers: { 'Authorization': `Bearer ${token}` } }),
+          fetch(`${API_URL}/api/maintenance`, { headers: { 'Authorization': `Bearer ${token}` } }),
           fetch(`${API_URL}/api/assets/`, { headers: { 'Authorization': `Bearer ${token}` } })
         ]);
 
