@@ -85,7 +85,7 @@ export default function AssetsPage() {
     fetchEmployees();
   }, [fetchAssets]);
 
-  const isAdmin = currentUser?.role === 'Admin';
+  const isAdmin = currentUser?.role === 'Admin' || currentUser?.role === 'Manager';
 
   const triggerAssignModal = (assetId: number) => {
     if (!isAdmin) return alert("Only an administrator can assign assets.");

@@ -24,7 +24,7 @@ export default function AssetCard({ asset, onAssign, onReport, onEdit }: AssetCa
     : 'text-amber-400 bg-amber-400/10 border-amber-400/20';
 
   return (
-    <div className="bg-[#0f172a]/80 backdrop-blur-sm rounded-2xl p-6 hover:shadow-lg hover:shadow-black/20 hover:-translate-y-1 transition-all duration-300 flex flex-col gap-5 group border border-slate-700/50">
+    <div className="bg-[#0f172a]/80 backdrop-blur-sm rounded-2xl p-6 hover:shadow-lg hover:shadow-black/20 hover:-translate-y-1 transition-all duration-300 flex flex-col gap-5 group border border-slate-700/50 relative">
       <div className="flex justify-between items-start gap-4">
         <div className="min-w-0 flex-1">
           <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">{asset.name}</h3>
@@ -41,11 +41,11 @@ export default function AssetCard({ asset, onAssign, onReport, onEdit }: AssetCa
       </div>
       
       {(onAssign || onReport || onEdit) && (
-        <div className="mt-auto pt-2 grid grid-cols-2 gap-3">
+        <div className="mt-auto pt-2 flex flex-col gap-3">
           {onEdit && (
             <button 
               onClick={() => onEdit(asset)}
-              className="text-blue-400 hover:text-white hover:bg-blue-600/20 text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-slate-800/50 px-3 py-2 rounded-xl border border-slate-700/50 hover:border-blue-500/50 col-span-2 mb-2"
+              className="w-full flex items-center justify-center gap-2 bg-blue-600/10 hover:bg-blue-600 border border-blue-500/20 hover:border-blue-500 text-blue-400 hover:text-white font-bold py-2.5 rounded-xl transition-all shadow-lg text-sm"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
               Edit Asset Details
@@ -54,7 +54,7 @@ export default function AssetCard({ asset, onAssign, onReport, onEdit }: AssetCa
           {onAssign && (
             <Button 
               onClick={() => onAssign(asset.id)}
-              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20 col-span-2 border-none"
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl transition-all shadow-lg shadow-blue-500/20 border-none"
             >
               Manage Asset
             </Button>
@@ -62,7 +62,7 @@ export default function AssetCard({ asset, onAssign, onReport, onEdit }: AssetCa
           {onReport && (
             <Button 
               onClick={() => onReport(asset.id)}
-              className="w-full bg-red-500/10 hover:bg-red-500 border border-red-500/20 hover:border-red-500 text-red-400 hover:text-white font-bold py-2.5 rounded-xl transition-all col-span-2 shadow-lg"
+              className="w-full bg-red-500/10 hover:bg-red-500 border border-red-500/20 hover:border-red-500 text-red-400 hover:text-white font-bold py-2.5 rounded-xl transition-all shadow-lg"
             >
               Report Issue
             </Button>
