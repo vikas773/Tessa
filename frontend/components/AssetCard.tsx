@@ -24,12 +24,12 @@ export default function AssetCard({ asset, onAssign, onReport }: AssetCardProps)
 
   return (
     <div className="bg-[#0f172a]/80 backdrop-blur-sm rounded-2xl p-6 hover:shadow-lg hover:shadow-black/20 hover:-translate-y-1 transition-all duration-300 flex flex-col gap-5 group border border-slate-700/50">
-      <div className="flex justify-between items-start">
-        <div className="max-w-[70%]">
+      <div className="flex justify-between items-start gap-4">
+        <div className="min-w-0 flex-1">
           <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors truncate">{asset.name}</h3>
           <p className="text-sm font-semibold text-blue-500 uppercase tracking-wider mt-1">{asset.type}</p>
         </div>
-        <span className={`px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border ${statusColor}`}>
+        <span className={`shrink-0 whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border ${statusColor}`}>
           {asset.status}
         </span>
       </div>

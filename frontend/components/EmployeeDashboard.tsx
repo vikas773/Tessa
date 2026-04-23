@@ -110,12 +110,12 @@ export default function EmployeeDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {assets.map((asset) => (
               <div key={asset.id} className="bg-[#0f172a]/80 backdrop-blur-sm rounded-3xl p-6 hover:shadow-lg hover:shadow-black/20 hover:-translate-y-1.5 transition-all duration-300 flex flex-col gap-6 group border border-slate-700/50">
-                <div className="flex justify-between items-start">
-                    <div className="max-w-[70%]">
+                <div className="flex justify-between items-start gap-4">
+                    <div className="min-w-0 flex-1">
                       <h3 className="text-2xl font-black text-white group-hover:text-blue-400 transition-colors truncate">{asset.name}</h3>
                       <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1.5">{asset.type}</p>
                     </div>
-                    <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
+                    <span className={`shrink-0 whitespace-nowrap px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
                       asset.status === 'Available' || asset.status === 'Assigned' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' :
                       asset.status === 'Broken' ? 'text-red-400 bg-red-500/10 border-red-500/20' :
                       'text-amber-400 bg-amber-500/10 border-amber-500/20'
