@@ -101,7 +101,6 @@ export default function AdminRequestsPage() {
                     <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400">Employee</th>
                     <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400">Request Details</th>
                     <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400">Status</th>
-                    <th className="px-6 py-4 text-xs font-black uppercase tracking-widest text-slate-400 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/50">
@@ -125,24 +124,6 @@ export default function AdminRequestsPage() {
                           }`}>
                             {req.status}
                           </span>
-                        </td>
-                        <td className="px-6 py-5 text-right space-x-2">
-                          {req.status === 'Pending' && (
-                            <>
-                              <button 
-                                onClick={() => handleUpdateStatus(req.id, 'Approved')}
-                                className="bg-emerald-500 hover:bg-emerald-400 text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-lg transition-all"
-                              >
-                                Approve
-                              </button>
-                              <button 
-                                onClick={() => handleUpdateStatus(req.id, 'Rejected')}
-                                className="bg-red-500/10 hover:bg-red-500 border border-red-500/20 hover:border-red-500 text-red-400 hover:text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-lg transition-all"
-                              >
-                                Reject
-                              </button>
-                            </>
-                          )}
                         </td>
                       </tr>
                     );
