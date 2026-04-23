@@ -108,6 +108,10 @@ export default function PageLayout({ children }: { children: React.ReactNode }) 
                 <svg className="w-5 h-5 mx-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2m3.236-1.428a3 3 0 010-5.144M23 17v-2a4 4 0 00-4-4h-0.236a3 3 0 010 5.144M7 8a4 4 0 110-8 4 4 0 010 8zm10 0a4 4 0 110-8 4 4 0 010 8z"></path></svg>
                 Reports
               </Link>
+              <Link href="/requests" className={`flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all border ${pathname.startsWith('/requests') ? 'bg-blue-600/10 text-blue-400 border-blue-500/20 shadow-[0_0_15px_-3px_rgba(59,130,246,0.15)]' : 'text-slate-400 hover:text-white hover:bg-slate-800/50 border-transparent'}`}>
+                <svg className="w-5 h-5 mx-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Asset Requests
+              </Link>
             </>
           )}
 

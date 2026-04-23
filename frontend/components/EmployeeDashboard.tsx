@@ -16,8 +16,10 @@ export default function EmployeeDashboard() {
 
   // Modal State
   const [showReportModal, setShowReportModal] = useState(false);
+  const [showRequestModal, setShowRequestModal] = useState(false);
   const [selectedAssetId, setSelectedAssetId] = useState<number | null>(null);
   const [issueDescription, setIssueDescription] = useState('');
+  const [requestFormData, setRequestFormData] = useState({ asset_type: 'Laptop', reason: '' });
 
   const fetchMyAssets = useCallback(async () => {
     const token = localStorage.getItem('tessa_token');
@@ -81,17 +83,45 @@ export default function EmployeeDashboard() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('tessa_token');
-    localStorage.removeItem('tessa_user');
-    window.location.href = '/login';
+  const handleAssetRequest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const token = localStorage.getItem('tessa_token');
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
+    try {
+      const res = await fetch(`${API_URL}/api/requests/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(requestFormData)
+      });
+
+      if (res.ok) {
+        setShowRequestModal(false);
+        setRequestFormData({ asset_type: 'Laptop', reason: '' });
+        alert("Your asset request has been submitted successfully.");
+      }
+    } catch (err) {
+      console.error("Error submitting request", err);
+    }
   };
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6 md:px-8 md:py-10 lg:px-12 lg:py-14">
-      <header className="mb-8 md:mb-12">
-        <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">My Hardware Assets</h2>
-        <p className="text-base md:text-lg text-slate-400 font-medium">View your assigned equipment and report technical issues instantly.</p>
+      <header className="mb-8 md:mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div>
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">My Hardware Assets</h2>
+          <p className="text-base md:text-lg text-slate-400 font-medium">View your assigned equipment and report technical issues instantly.</p>
+        </div>
+        <button 
+          onClick={() => setShowRequestModal(true)}
+          className="bg-blue-600 hover:bg-blue-500 text-white font-black py-4 px-8 rounded-2xl shadow-xl shadow-blue-500/20 transition-all active:scale-95 flex items-center gap-3 border-none"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+          Request New Asset
+        </button>
       </header>
       
       {loading ? (
@@ -116,6 +146,48 @@ export default function EmployeeDashboard() {
               onReport={triggerReportIssue} 
             />
           ))}
+        </div>
+      )}
+
+      {/* Request Asset Modal */}
+      {showRequestModal && (
+        <div className="fixed inset-0 bg-[#0f172a]/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-[#1e293b] border border-slate-700/50 rounded-3xl w-full max-w-md p-8 shadow-2xl shadow-black/50">
+            <h3 className="text-2xl font-black mb-4 text-white">Request New Asset</h3>
+            <p className="text-slate-400 text-sm mb-6 font-medium">Select the type of hardware or furniture you need and provide a brief reason.</p>
+            <form onSubmit={handleAssetRequest} className="flex flex-col gap-5">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Asset Category</label>
+                <select 
+                  className="w-full bg-[#0f172a] border border-slate-700 text-white rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium"
+                  value={requestFormData.asset_type}
+                  onChange={e => setRequestFormData({...requestFormData, asset_type: e.target.value})}
+                >
+                  <option value="Laptop">Laptop</option>
+                  <option value="Desktop">Desktop</option>
+                  <option value="Monitor">Monitor</option>
+                  <option value="Peripherals">Peripherals (Keyboard/Mouse)</option>
+                  <option value="Mobile">Mobile Phone</option>
+                  <option value="Furniture">Office Furniture</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Reason for Request</label>
+                <textarea 
+                  required 
+                  rows={3}
+                  className="w-full bg-[#0f172a] border border-slate-700 text-white rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500/50 transition-all resize-none shadow-inner placeholder-slate-500 font-medium" 
+                  value={requestFormData.reason} 
+                  onChange={e => setRequestFormData({...requestFormData, reason: e.target.value})} 
+                  placeholder="e.g. Current laptop is slow, need a monitor for dual screen setup..." 
+                />
+              </div>
+              <div className="flex gap-4 mt-4">
+                <button type="button" className="flex-1 bg-transparent text-slate-400 font-bold hover:bg-slate-800/50 transition-all rounded-xl py-3" onClick={() => setShowRequestModal(false)}>Cancel</button>
+                <button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold shadow-lg shadow-blue-500/20 transition-all rounded-xl py-3">Submit Request</button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 

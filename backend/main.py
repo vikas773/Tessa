@@ -1,7 +1,7 @@
 import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import users, assets, assignments, maintenance, dashboard, audit_logs
+from routers import users, assets, assignments, maintenance, dashboard, audit_logs, requests
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import models, schemas
@@ -50,3 +50,4 @@ app.include_router(assignments.router)
 app.include_router(maintenance.router)
 app.include_router(dashboard.router)
 app.include_router(audit_logs.router)
+app.include_router(requests.router)

@@ -56,3 +56,13 @@ class AuthLog(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, nullable=False)
     logout_timestamp = Column(DateTime(timezone=True), server_default=func.now())
+
+class AssetRequest(Base):
+    __tablename__ = "asset_requests"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer)
+    asset_type = Column(String(100), nullable=False)
+    reason = Column(Text)
+    status = Column(String(50), default="Pending")  # Pending, Approved, Rejected
+    request_date = Column(DateTime(timezone=True), server_default=func.now())

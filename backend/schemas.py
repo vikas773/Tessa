@@ -90,3 +90,18 @@ class AuditLogOut(BaseModel):
     timestamp: datetime
     class Config:
         from_attributes = True
+
+# Asset Requests
+class AssetRequestCreate(BaseModel):
+    asset_type: str
+    reason: Optional[str] = None
+
+class AssetRequestOut(BaseModel):
+    id: int
+    user_id: int
+    asset_type: str
+    reason: Optional[str]
+    status: str
+    request_date: datetime
+    class Config:
+        from_attributes = True
