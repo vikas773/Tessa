@@ -5,7 +5,7 @@ import PageLayout from '../../components/PageLayout';
 
 interface AssetRequest {
   id: number;
-  asset_type: str;
+  asset_type: string;
   reason: string;
   status: string;
   request_date: string;
