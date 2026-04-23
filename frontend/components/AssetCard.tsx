@@ -59,7 +59,7 @@ export default function AssetCard({ asset, onAssign, onReport, onEdit }: AssetCa
               Manage Asset
             </Button>
           )}
-          {onReport && (
+          {onReport && asset.status !== 'Under Maintenance' && asset.status !== 'Broken' && (
             <Button 
               onClick={() => onReport(asset.id)}
               className="w-full bg-red-500/10 hover:bg-red-500 border border-red-500/20 hover:border-red-500 text-red-400 hover:text-white font-bold py-2.5 rounded-xl transition-all shadow-lg"
