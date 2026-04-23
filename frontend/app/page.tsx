@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import AdminDashboard from '../components/AdminDashboard';
 import EmployeeDashboard from '../components/EmployeeDashboard';
+import PageLayout from '../components/PageLayout';
 
 export default function Home() {
   const [role, setRole] = useState<string | null>(null);
@@ -36,8 +37,8 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen w-full relative">
+    <PageLayout>
       {(role === 'Admin' || role === 'Manager') ? <AdminDashboard /> : <EmployeeDashboard />}
-    </main>
+    </PageLayout>
   );
 }

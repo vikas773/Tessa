@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from 'react';
-import Navbar from '../../components/Navbar';
+import PageLayout from '../../components/PageLayout';
 import AssetCard from '../../components/AssetCard';
 import Button from '../../components/Button';
 
@@ -140,21 +140,19 @@ export default function AssetsPage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 relative overflow-hidden">
-      <Navbar />
-
+    <PageLayout>
       <div className="max-w-7xl mx-auto px-6 py-12 relative z-10">
         <header className="mb-10 flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div>
-            <h2 className="text-4xl font-extrabold tracking-tight text-slate-900 mb-2">Corporate Assets</h2>
-            <p className="text-lg text-slate-500 font-medium">Browse and manage the full inventory of organizational hardware.</p>
+            <h2 className="text-4xl font-extrabold tracking-tight text-white mb-2">Corporate Assets</h2>
+            <p className="text-lg text-slate-400 font-medium">Browse and manage the full inventory of organizational hardware.</p>
           </div>
           <div className="flex gap-3">
-            <Button variant="secondary" onClick={exportCSV} className="bg-white border-slate-200 text-slate-700 font-bold py-3 px-6 rounded-xl shadow-sm hover:border-slate-300">
+            <Button variant="secondary" onClick={exportCSV} className="bg-[#0f172a] border-slate-700/50 text-slate-300 font-bold py-3 px-6 rounded-xl shadow-sm hover:border-slate-600 hover:text-white transition-all">
               Export CSV
             </Button>
             {isAdmin && (
-              <Button onClick={() => setShowRegisterModal(true)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg">
+              <Button onClick={() => setShowRegisterModal(true)} className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-blue-500/20 border-none">
                 + Register New Asset
               </Button>
             )}
@@ -162,20 +160,20 @@ export default function AssetsPage() {
         </header>
 
         {/* Search and Advanced Filters */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm">
+        <div className="flex flex-col md:flex-row gap-4 mb-8 bg-[#0f172a]/80 backdrop-blur-sm p-2 rounded-2xl border border-slate-700/50 shadow-sm">
           <div className="flex-1 relative">
-            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             <input 
               type="text"
               placeholder="Search assets by name or serial..."
-              className="w-full bg-slate-50/50 border-none rounded-xl pl-12 pr-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+              className="w-full bg-[#1e293b] border-none rounded-xl pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium shadow-inner"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <div className="flex gap-4">
             <select 
-              className="bg-slate-50/50 border-none rounded-xl px-6 py-3 text-slate-600 font-bold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 cursor-pointer transition-all"
+              className="bg-[#1e293b] border-none rounded-xl px-6 py-3 text-slate-300 font-bold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 cursor-pointer transition-all shadow-inner"
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
             >
@@ -185,7 +183,7 @@ export default function AssetsPage() {
               <option value="Peripherals">Peripherals</option>
             </select>
             <select 
-              className="bg-slate-50/50 border-none rounded-xl px-6 py-3 text-slate-600 font-bold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 cursor-pointer transition-all"
+              className="bg-[#1e293b] border-none rounded-xl px-6 py-3 text-slate-300 font-bold text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 cursor-pointer transition-all shadow-inner"
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
             >
@@ -200,7 +198,7 @@ export default function AssetsPage() {
 
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+            <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
             <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Synchronizing Inventory...</p>
           </div>
         ) : (
@@ -214,14 +212,14 @@ export default function AssetsPage() {
 
       {/* Assign Modal */}
       {showAssignModal && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl">
-            <h3 className="text-xl font-bold mb-4 text-slate-900">Assign Asset</h3>
-            <p className="text-slate-500 text-sm mb-4">Select an active employee to allocate this hardware to.</p>
+        <div className="fixed inset-0 bg-[#0f172a]/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-[#1e293b] border border-slate-700/50 rounded-2xl w-full max-w-md p-6 shadow-2xl shadow-black/50">
+            <h3 className="text-xl font-bold mb-4 text-white">Assign Asset</h3>
+            <p className="text-slate-400 text-sm mb-4">Select an active employee to allocate this hardware to.</p>
             <form onSubmit={submitAssign} className="flex flex-col gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Employee</label>
-                <select required className="w-full border border-slate-200 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500/50" value={selectedEmployeeId} onChange={e => setSelectedEmployeeId(e.target.value)}>
+                <label className="block text-sm font-medium text-slate-400 mb-1">Employee</label>
+                <select required className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500/50" value={selectedEmployeeId} onChange={e => setSelectedEmployeeId(e.target.value)}>
                   <option value="" disabled>-- Select Employee --</option>
                   {employees.map(emp => (
                     <option key={emp.id} value={emp.id}>{emp.name} ({emp.email})</option>
@@ -229,8 +227,8 @@ export default function AssetsPage() {
                 </select>
               </div>
               <div className="flex gap-3 mt-4">
-                <Button type="button" variant="secondary" className="flex-1 bg-slate-100 text-slate-600 border-none hover:bg-slate-200" onClick={() => setShowAssignModal(false)}>Cancel</Button>
-                <Button type="submit" className="flex-1">Confirm Assign</Button>
+                <Button type="button" variant="secondary" className="flex-1 bg-transparent text-slate-400 border-none hover:bg-slate-800/50 transition-all" onClick={() => setShowAssignModal(false)}>Cancel</Button>
+                <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-500 border-none shadow-lg shadow-blue-500/20">Confirm Assign</Button>
               </div>
             </form>
           </div>
@@ -239,21 +237,21 @@ export default function AssetsPage() {
 
       {/* Register Asset Modal */}
       {showRegisterModal && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl">
-            <h3 className="text-xl font-bold mb-4 text-slate-900">Register New Asset</h3>
+        <div className="fixed inset-0 bg-[#0f172a]/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-[#1e293b] border border-slate-700/50 rounded-2xl w-full max-w-md p-6 shadow-2xl shadow-black/50">
+            <h3 className="text-xl font-bold mb-4 text-white">Register New Asset</h3>
             <form onSubmit={handleRegisterAsset} className="flex flex-col gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Asset Name / Model</label>
-                <input required type="text" className="w-full border border-slate-200 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500/50" value={assetForm.name} onChange={e => setAssetForm({...assetForm, name: e.target.value})} placeholder="e.g. MacBook Pro M3" />
+                <label className="block text-sm font-medium text-slate-400 mb-1">Asset Name / Model</label>
+                <input required type="text" className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500/50 placeholder-slate-500" value={assetForm.name} onChange={e => setAssetForm({...assetForm, name: e.target.value})} placeholder="e.g. MacBook Pro M3" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Serial Number</label>
-                <input required type="text" className="w-full border border-slate-200 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500/50" value={assetForm.serial_number} onChange={e => setAssetForm({...assetForm, serial_number: e.target.value})} placeholder="SN-12345678" />
+                <label className="block text-sm font-medium text-slate-400 mb-1">Serial Number</label>
+                <input required type="text" className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500/50 placeholder-slate-500" value={assetForm.serial_number} onChange={e => setAssetForm({...assetForm, serial_number: e.target.value})} placeholder="SN-12345678" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Category</label>
-                <select className="w-full border border-slate-200 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500/50" value={assetForm.type} onChange={e => setAssetForm({...assetForm, type: e.target.value})}>
+                <label className="block text-sm font-medium text-slate-400 mb-1">Category</label>
+                <select className="w-full bg-[#0f172a] text-white border border-slate-700 rounded-lg px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500/50" value={assetForm.type} onChange={e => setAssetForm({...assetForm, type: e.target.value})}>
                   <option value="Laptop">Laptop</option>
                   <option value="Desktop">Desktop</option>
                   <option value="Peripherals">Peripherals</option>
@@ -262,13 +260,13 @@ export default function AssetsPage() {
                 </select>
               </div>
               <div className="flex gap-3 mt-4">
-                <Button type="button" variant="secondary" className="flex-1 bg-slate-100 text-slate-600 border-none hover:bg-slate-200" onClick={() => setShowRegisterModal(false)}>Cancel</Button>
-                <Button type="submit" className="flex-1">Register Asset</Button>
+                <Button type="button" variant="secondary" className="flex-1 bg-transparent text-slate-400 border-none hover:bg-slate-800/50 transition-all" onClick={() => setShowRegisterModal(false)}>Cancel</Button>
+                <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-500 border-none shadow-lg shadow-blue-500/20">Register Asset</Button>
               </div>
             </form>
           </div>
         </div>
       )}
-    </main>
+    </PageLayout>
   );
 }
