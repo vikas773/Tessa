@@ -189,13 +189,12 @@ export default function AssetsPage() {
 
 
   return (
-  return (
     <PageLayout>
       <div className="max-w-7xl mx-auto">
         <header className="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">Inventory Management</h2>
-            <p className="text-base md:text-lg text-[#6B7280] font-medium italic">"Centralized control and tracking of organizational hardware assets."</p>
+            <p className="text-base md:text-lg text-[#6B7280] font-medium italic">&quot;Centralized control and tracking of organizational hardware assets.&quot;</p>
           </div>
           <div className="flex gap-4">
             {isAdmin && (

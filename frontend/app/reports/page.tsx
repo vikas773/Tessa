@@ -71,13 +71,14 @@ export default function ReportsPage() {
       <div className="max-w-7xl mx-auto px-4 py-6 md:px-8 md:py-10 lg:px-12 lg:py-14">
         <header className="mb-12">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-blue-600/10 text-blue-400 flex items-center justify-center">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+            <div className="w-10 h-10 rounded-xl bg-blue-600/10 text-[#6366F1] flex items-center justify-center border border-[#6366F1]/20 shadow-lg shadow-[#6366F1]/5">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             </div>
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">Condition Reports</h2>
           </div>
-          <p className="text-base md:text-lg text-slate-400 font-medium">Review asset condition reports and maintenance requests submitted by the fleet.</p>
+          <p className="text-base md:text-lg text-slate-400 font-medium italic">&quot;Review asset condition reports and maintenance requests submitted by the fleet.&quot;</p>
         </header>
+
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">

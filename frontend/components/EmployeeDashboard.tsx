@@ -14,6 +14,7 @@ export default function EmployeeDashboard() {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [requests, setRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   // Modal State
   const [showReportModal, setShowReportModal] = useState(false);
@@ -47,6 +48,7 @@ export default function EmployeeDashboard() {
   }, []);
 
   useEffect(() => {
+    setMounted(true);
     fetchMyData();
   }, [fetchMyData]);
 
@@ -116,12 +118,14 @@ export default function EmployeeDashboard() {
     }
   };
 
+  if (!mounted) return null;
+
   return (
     <div className="max-w-6xl mx-auto">
       <header className="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
           <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-2">My Hardware</h2>
-          <p className="text-base md:text-lg text-[#6B7280] font-medium italic">"Manage your assigned equipment and technical support tickets."</p>
+          <p className="text-base md:text-lg text-[#6B7280] font-medium italic">&quot;Manage your assigned equipment and technical support tickets.&quot;</p>
         </div>
         <button 
           onClick={() => setShowRequestModal(true)}
@@ -140,7 +144,7 @@ export default function EmployeeDashboard() {
       ) : assets.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 bg-[#1A1D27] rounded-[12px] border border-[#2A2D3E] shadow-sm">
             <div className="w-20 h-20 bg-[#0F1117] rounded-full flex items-center justify-center mb-6 border border-[#2A2D3E]">
-              <svg className="w-10 h-10 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <svg className="w-10 h-10 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
             </div>
             <p className="text-white font-bold text-xl mb-2">No Assets Assigned</p>
             <p className="text-[#6B7280] text-sm">Your profile currently has no registered organizational hardware.</p>
@@ -161,10 +165,11 @@ export default function EmployeeDashboard() {
       <div className="mt-24">
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 rounded-lg bg-[#6366F1]/10 text-[#6366F1] flex items-center justify-center border border-[#6366F1]/20">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
           </div>
           <h3 className="text-2xl font-black text-white">Hardware Request History</h3>
         </div>
+
 
         {requests.length === 0 ? (
           <div className="bg-[#1A1D27] border border-[#2A2D3E] rounded-[12px] p-12 text-center">

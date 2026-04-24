@@ -22,6 +22,7 @@ export default function AdminRequestsPage() {
   const [requests, setRequests] = useState<AssetRequest[]>([]);
   const [users, setUsers] = useState<Record<number, User>>({});
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   const fetchData = async () => {
     const token = localStorage.getItem('tessa_token');
@@ -53,6 +54,7 @@ export default function AdminRequestsPage() {
   };
 
   useEffect(() => {
+    setMounted(true);
     fetchData();
   }, []);
 
@@ -74,19 +76,21 @@ export default function AdminRequestsPage() {
     }
   };
 
-  return (
+  if (!mounted) return null;
+
   return (
     <PageLayout>
       <div className="max-w-7xl mx-auto">
         <header className="mb-12">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-lg bg-[#6366F1]/10 text-[#6366F1] flex items-center justify-center border border-[#6366F1]/20">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
             </div>
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">Procurement Requests</h2>
           </div>
-          <p className="text-base md:text-lg text-[#6B7280] font-medium italic">"Audit and authorize enterprise hardware acquisition requests."</p>
+          <p className="text-base md:text-lg text-[#6B7280] font-medium italic">&quot;Audit and authorize enterprise hardware acquisition requests.&quot;</p>
         </header>
+
 
         <div className="bg-[#1A1D27] rounded-xl border border-[#2A2D3E] shadow-2xl overflow-hidden">
           <div className="p-6 border-b border-[#2A2D3E] bg-[#13151F]">
@@ -161,6 +165,5 @@ export default function AdminRequestsPage() {
         </div>
       </div>
     </PageLayout>
-  );
   );
 }

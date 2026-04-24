@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export default function PageLayout({ children }: { children: React.ReactNode }) {
+  const [mounted, setMounted] = useState(false);
   const [role, setRole] = useState<string | null>(null);
   const [userName, setUserName] = useState<string>('');
   const pathname = usePathname();
 
   useEffect(() => {
+    setMounted(true);
     const userRaw = localStorage.getItem('tessa_user');
     if (userRaw) {
       try {
@@ -35,8 +37,15 @@ export default function PageLayout({ children }: { children: React.ReactNode }) 
 
   // Close mobile menu on route change
   useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  }, [pathname, isMobileMenuOpen]);
+
+  // Avoid hydration mismatch by rendering a simplified or empty version until mounted
+  if (!mounted) {
+    return <div className="h-screen w-full bg-[#0F1117]" />;
+  }
 
   return (
     <div className="flex flex-col md:flex-row h-screen w-full bg-[#0F1117] text-slate-100 overflow-hidden font-sans">
@@ -96,20 +105,20 @@ export default function PageLayout({ children }: { children: React.ReactNode }) 
           
           {canManage && (
             <>
-              <Link href="/assets" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all border-l-2 ${pathname.startsWith('/assets') ? 'text-[#6366F1] border-[#6366F1] bg-[#6366F1]/5' : 'text-slate-400 hover:text-white hover:bg-[#1A1D27] border-transparent'}`}>
+              <Link href="/assets" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all border-l-2 ${pathname?.startsWith('/assets') ? 'text-[#6366F1] border-[#6366F1] bg-[#6366F1]/5' : 'text-slate-400 hover:text-white hover:bg-[#1A1D27] border-transparent'}`}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                 Assets Hub
               </Link>
-              <Link href="/employees" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all border-l-2 ${pathname.startsWith('/employees') ? 'text-[#6366F1] border-[#6366F1] bg-[#6366F1]/5' : 'text-slate-400 hover:text-white hover:bg-[#1A1D27] border-transparent'}`}>
+              <Link href="/employees" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all border-l-2 ${pathname?.startsWith('/employees') ? 'text-[#6366F1] border-[#6366F1] bg-[#6366F1]/5' : 'text-slate-400 hover:text-white hover:bg-[#1A1D27] border-transparent'}`}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                 Employee Directory
               </Link>
-              <Link href="/reports" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all border-l-2 ${pathname.startsWith('/reports') ? 'text-[#6366F1] border-[#6366F1] bg-[#6366F1]/5' : 'text-slate-400 hover:text-white hover:bg-[#1A1D27] border-transparent'}`}>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2m3.236-1.428a3 3 0 010-5.144M23 17v-2a4 4 0 00-4-4h-0.236a3 3 0 010 5.144M7 8a4 4 0 110-8 4 4 0 010 8zm10 0a4 4 0 110-8 4 4 0 010 8z"></path></svg>
+              <Link href="/reports" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all border-l-2 ${pathname?.startsWith('/reports') ? 'text-[#6366F1] border-[#6366F1] bg-[#6366F1]/5' : 'text-slate-400 hover:text-white hover:bg-[#1A1D27] border-transparent'}`}>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                 Reports
               </Link>
-              <Link href="/requests" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all border-l-2 ${pathname.startsWith('/requests') ? 'text-[#6366F1] border-[#6366F1] bg-[#6366F1]/5' : 'text-slate-400 hover:text-white hover:bg-[#1A1D27] border-transparent'}`}>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <Link href="/requests" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all border-l-2 ${pathname?.startsWith('/requests') ? 'text-[#6366F1] border-[#6366F1] bg-[#6366F1]/5' : 'text-slate-400 hover:text-white hover:bg-[#1A1D27] border-transparent'}`}>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                 Asset Requests
               </Link>
             </>
@@ -117,17 +126,18 @@ export default function PageLayout({ children }: { children: React.ReactNode }) 
 
           {isEmployee && (
             <>
-              <Link href="/my-reports" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all border-l-2 ${pathname.startsWith('/my-reports') ? 'text-[#6366F1] border-[#6366F1] bg-[#6366F1]/5' : 'text-slate-400 hover:text-white hover:bg-[#1A1D27] border-transparent'}`}>
+              <Link href="/my-reports" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all border-l-2 ${pathname?.startsWith('/my-reports') ? 'text-[#6366F1] border-[#6366F1] bg-[#6366F1]/5' : 'text-slate-400 hover:text-white hover:bg-[#1A1D27] border-transparent'}`}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                 My Reports
               </Link>
-              <Link href="/my-requests" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all border-l-2 ${pathname.startsWith('/my-requests') ? 'text-[#6366F1] border-[#6366F1] bg-[#6366F1]/5' : 'text-slate-400 hover:text-white hover:bg-[#1A1D27] border-transparent'}`}>
+              <Link href="/my-requests" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-bold transition-all border-l-2 ${pathname?.startsWith('/my-requests') ? 'text-[#6366F1] border-[#6366F1] bg-[#6366F1]/5' : 'text-slate-400 hover:text-white hover:bg-[#1A1D27] border-transparent'}`}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                 My Requests
               </Link>
             </>
           )}
         </nav>
+
 
         <div className="mt-6 border-t border-[#2A2D3E] pt-6 px-2">
           <div className="flex items-center gap-3 py-3 mb-2">

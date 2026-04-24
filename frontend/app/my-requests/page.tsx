@@ -14,8 +14,10 @@ interface AssetRequest {
 export default function MyRequestsPage() {
   const [requests, setRequests] = useState<AssetRequest[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const fetchRequests = async () => {
       const token = localStorage.getItem('tessa_token');
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
@@ -36,6 +38,8 @@ export default function MyRequestsPage() {
     fetchRequests();
   }, []);
 
+  if (!mounted) return null;
+
   return (
     <PageLayout>
       <div className="max-w-6xl mx-auto">
@@ -46,7 +50,8 @@ export default function MyRequestsPage() {
             </div>
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">My Request History</h2>
           </div>
-          <p className="text-base md:text-lg text-[#6B7280] font-medium italic">"Review the status of your organizational equipment requests."</p>
+
+          <p className="text-base md:text-lg text-[#6B7280] font-medium italic">&quot;Review the status of your organizational equipment requests.&quot;</p>
         </header>
 
         <div className="bg-[#1A1D27] rounded-xl border border-[#2A2D3E] shadow-2xl overflow-hidden">
@@ -66,7 +71,7 @@ export default function MyRequestsPage() {
                   <svg className="w-10 h-10 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
                 <p className="text-white font-bold text-lg mb-2">No Requests Filed</p>
-                <p className="text-[#6B7280] text-sm max-w-xs mx-auto">You haven't submitted any hardware requests yet. Your submissions will appear here for tracking.</p>
+                <p className="text-[#6B7280] text-sm max-w-xs mx-auto">You haven&apos;t submitted any hardware requests yet. Your submissions will appear here for tracking.</p>
               </div>
             ) : (
               <table className="w-full text-left border-collapse">

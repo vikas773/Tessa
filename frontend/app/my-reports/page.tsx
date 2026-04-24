@@ -22,8 +22,10 @@ export default function MyReportsPage() {
   const [tickets, setTickets] = useState<MaintenanceTicket[]>([]);
   const [assets, setAssets] = useState<Record<number, Asset>>({});
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const fetchData = async () => {
       const token = localStorage.getItem('tessa_token');
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
@@ -31,7 +33,7 @@ export default function MyReportsPage() {
       try {
         const [mRes, aRes] = await Promise.all([
           fetch(`${API_URL}/api/maintenance/my`, { headers: { 'Authorization': `Bearer ${token}` } }),
-          fetch(`${API_URL}/api/assets/`, { headers: { 'Authorization': `Bearer ${token}` } })
+          fetch(`${API_URL}/api/assets/my`, { headers: { 'Authorization': `Bearer ${token}` } })
         ]);
 
         const mData = await mRes.json();
@@ -56,6 +58,8 @@ export default function MyReportsPage() {
     fetchData();
   }, []);
 
+  if (!mounted) return null;
+
   return (
     <PageLayout>
       <div className="max-w-6xl mx-auto">
@@ -66,7 +70,8 @@ export default function MyReportsPage() {
             </div>
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white">Maintenance Reports History</h2>
           </div>
-          <p className="text-base md:text-lg text-[#6B7280] font-medium italic">"Track the progress of your technical assistance and repair logs."</p>
+
+          <p className="text-base md:text-lg text-[#6B7280] font-medium italic">&quot;Track the progress of your technical assistance and repair logs.&quot;</p>
         </header>
 
         <div className="bg-[#1A1D27] rounded-xl border border-[#2A2D3E] shadow-2xl overflow-hidden">
@@ -86,7 +91,7 @@ export default function MyReportsPage() {
                   <svg className="w-10 h-10 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                 </div>
                 <p className="text-white font-bold text-lg mb-2">No Reports Filed</p>
-                <p className="text-[#6B7280] text-sm max-w-xs mx-auto">You haven't submitted any hardware condition reports yet. Your future submissions will appear here for tracking.</p>
+                <p className="text-[#6B7280] text-sm max-w-xs mx-auto">You haven&apos;t submitted any hardware condition reports yet. Your future submissions will appear here for tracking.</p>
               </div>
             ) : (
               <table className="w-full text-left border-collapse">
