@@ -30,7 +30,7 @@ export default function Home() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-slate-900 relative overflow-hidden flex items-center justify-center">
+      <main className="min-h-screen bg-[#0f1623] relative overflow-hidden flex items-center justify-center">
         <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
       </main>
     );
