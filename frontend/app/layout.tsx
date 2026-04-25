@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+// Vercel Build Trigger: v1.0.1 - Ensuring latest UI parity
 import { Inter } from "next/font/google";
 import "./globals.css";
 
