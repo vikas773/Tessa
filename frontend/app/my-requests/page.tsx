@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import PageLayout from '../../components/PageLayout';
+import { TableSkeleton, EmptyState } from '../../components/UIStates';
 
 interface AssetRequest {
   id: number;
@@ -45,18 +46,13 @@ export default function MyRequestsPage() {
         <div className="bg-[#1A2235] rounded-[32px] border border-white/5 shadow-2xl overflow-hidden">
           <div className="overflow-x-auto">
             {loading ? (
-              <div className="flex flex-col items-center justify-center py-32">
-                <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-6"></div>
-                <p className="text-slate-500 font-black uppercase tracking-widest text-[10px]">Accessing Procurement Logs...</p>
-              </div>
+              <TableSkeleton rows={5} columns={4} />
             ) : requests.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-32 text-center">
-                 <div className="w-20 h-20 bg-[#0f1623] rounded-full flex items-center justify-center mb-6 border border-white/5">
-                    <svg className="w-10 h-10 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                 </div>
-                 <h3 className="text-xl font-black text-white italic uppercase tracking-tight mb-2">No Requests Filed</h3>
-                 <p className="text-slate-500 text-sm font-medium">Your procurement history is currently empty.</p>
-              </div>
+              <EmptyState 
+                title="No Requests Filed" 
+                message="Your procurement history is currently empty." 
+                icon={<svg className="w-10 h-10 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>}
+              />
             ) : (
               <table className="w-full text-left border-collapse">
                 <thead>
