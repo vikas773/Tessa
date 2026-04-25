@@ -1,14 +1,14 @@
 import React from 'react';
 
-export const TableSkeleton = () => (
+export const TableSkeleton = ({ rows = 5, columns = 3 }: { rows?: number, columns?: number }) => (
   <div className="w-full animate-pulse px-8 py-10 space-y-8">
     <div className="h-4 bg-white/5 rounded w-1/4"></div>
     <div className="space-y-4">
-      {[1, 2, 3, 4, 5].map(i => (
+      {Array.from({ length: rows }).map((_, i) => (
         <div key={i} className="flex gap-4">
-          <div className="h-12 bg-white/5 rounded-xl flex-1"></div>
-          <div className="h-12 bg-white/5 rounded-xl flex-[2]"></div>
-          <div className="h-12 bg-white/5 rounded-xl flex-1"></div>
+          {Array.from({ length: columns }).map((_, j) => (
+            <div key={j} className={`h-12 bg-white/5 rounded-xl ${j === 1 ? 'flex-[2]' : 'flex-1'}`}></div>
+          ))}
         </div>
       ))}
     </div>
