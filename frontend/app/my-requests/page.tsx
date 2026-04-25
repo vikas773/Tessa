@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PageLayout from '../../components/PageLayout';
 import { TableSkeleton, EmptyState } from '../../components/UIStates';
 
@@ -15,42 +15,66 @@ interface AssetRequest {
 export default function MyRequestsPage() {
   const [requests, setRequests] = useState<AssetRequest[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const fetchRequests = useCallback(async () => {
+    const token = localStorage.getItem('tessa_token');
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    try {
+      setLoading(true);
+      const res = await fetch(`${API_URL}/api/requests/my`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      setRequests(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const fetchRequests = async () => {
-      const token = localStorage.getItem('tessa_token');
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      try {
-        const res = await fetch(`${API_URL}/api/requests/my`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await res.json();
-        setRequests(Array.isArray(data) ? data : []);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchRequests();
-  }, []);
+  }, [fetchRequests]);
+
+  const filteredRequests = requests.filter(r => {
+    const searchStr = searchTerm.toLowerCase();
+    return (
+      r.asset_type.toLowerCase().includes(searchStr) ||
+      r.reason.toLowerCase().includes(searchStr) ||
+      `REQ-${r.id.toString().padStart(4, '0')}`.toLowerCase().includes(searchStr)
+    );
+  });
 
   return (
     <PageLayout>
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <header className="mb-12">
-          <h2 className="text-4xl font-black tracking-tight text-white italic uppercase mb-2">Hardware Requests</h2>
-          <p className="text-[#6B7280] font-medium">&quot;Historical record of equipment procurement requests and operational approvals.&quot;</p>
+        <header className="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+          <div>
+            <h2 className="text-4xl font-black tracking-tight text-white italic uppercase mb-2">Hardware Requests</h2>
+            <p className="text-[#6B7280] font-medium">&quot;Historical record of equipment procurement requests and operational approvals.&quot;</p>
+          </div>
+          <div className="relative w-full md:w-96">
+            <svg className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <input 
+              type="text" 
+              placeholder="Search by category, reason or ID..." 
+              className="w-full bg-[#1A2235] border border-white/5 rounded-2xl pl-14 pr-6 py-4 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500/50 transition-all font-bold text-sm shadow-xl"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </header>
 
         <div className="bg-[#1A2235] rounded-[32px] border border-white/5 shadow-2xl overflow-hidden">
           <div className="overflow-x-auto">
             {loading ? (
               <TableSkeleton rows={5} columns={4} />
-            ) : requests.length === 0 ? (
+            ) : filteredRequests.length === 0 ? (
               <EmptyState 
-                title="No Requests Filed" 
-                message="Your procurement history is currently empty." 
+                title={searchTerm ? "No Matching Requests" : "No Requests Filed"} 
+                message={searchTerm ? "Refine your search parameters to locate specific procurement logs." : "Your procurement history is currently empty."} 
                 icon={<svg className="w-10 h-10 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>}
               />
             ) : (
@@ -64,7 +88,7 @@ export default function MyRequestsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
-                  {requests.map((req) => (
+                  {filteredRequests.map((req) => (
                     <tr key={req.id} className="hover:bg-white/5 transition-all group">
                       <td className="px-8 py-6">
                         <p className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors mb-1">{req.asset_type}</p>
