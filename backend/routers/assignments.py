@@ -70,3 +70,11 @@ def return_asset(assignment_id: int, db: Session = Depends(get_db), current_user
     db.commit()
     db.refresh(assignment)
     return assignment
+
+@router.get("/", response_model=list[schemas.AssignmentOut])
+def read_assignments(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    """
+    **View all assignments**
+    Returns a list of all assignment records.
+    """
+    return db.query(models.Assignment).offset(skip).limit(limit).all()

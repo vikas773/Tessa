@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from typing import Optional
 from sqlalchemy.orm import Session
 import models, schemas, auth
 from database import get_db
@@ -42,7 +43,7 @@ def list_my_requests(db: Session = Depends(get_db), current_user: models.User = 
     return db.query(models.AssetRequest).filter(models.AssetRequest.user_id == current_user.id).order_by(models.AssetRequest.request_date.desc()).all()
 
 @router.put("/{request_id}/status", response_model=schemas.AssetRequestOut)
-def update_request_status(request_id: int, status: str, db: Session = Depends(get_db), current_user: models.User = Depends(auth.get_current_user)):
+def update_request_status(request_id: int, status: str, rejection_reason: Optional[str] = None, db: Session = Depends(get_db), current_user: models.User = Depends(auth.get_current_user)):
     """
     **Approve/Reject Request (Admin/Manager)**
     """
@@ -57,6 +58,9 @@ def update_request_status(request_id: int, status: str, db: Session = Depends(ge
         raise HTTPException(status_code=400, detail="Invalid status")
     
     req.status = status
+    if status == "Rejected":
+        req.rejection_reason = rejection_reason
+        
     db.commit()
     db.refresh(req)
     return req

@@ -65,4 +65,5 @@ class AssetRequest(Base):
     asset_type = Column(String(100), nullable=False)
     reason = Column(Text)
     status = Column(String(50), default="Pending")  # Pending, Approved, Rejected
+    rejection_reason = Column(Text, nullable=True)
     request_date = Column(DateTime(timezone=True), server_default=func.now())

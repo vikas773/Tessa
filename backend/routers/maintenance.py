@@ -55,3 +55,25 @@ def list_maintenance_tickets(db: Session = Depends(get_db)):
     **List all maintenance tickets (Admin/Manager)**
     """
     return db.query(models.Maintenance).order_by(models.Maintenance.id.desc()).all()
+
+@router.put("/{ticket_id}", response_model=schemas.MaintenanceOut)
+def update_maintenance_ticket(ticket_id: int, status: str, db: Session = Depends(get_db)):
+    """
+    **Update ticket status**
+    Possible values: Pending, In Progress, Closed.
+    """
+    ticket = db.query(models.Maintenance).filter(models.Maintenance.id == ticket_id).first()
+    if not ticket:
+        raise HTTPException(status_code=404, detail="Ticket not found")
+    
+    ticket.status = status
+    
+    # If closed, mark asset as available again
+    if status == "Closed":
+        asset = db.query(models.Asset).filter(models.Asset.id == ticket.asset_id).first()
+        if asset:
+            asset.status = "Available"
+            
+    db.commit()
+    db.refresh(ticket)
+    return ticket

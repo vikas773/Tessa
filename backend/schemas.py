@@ -102,6 +102,7 @@ class AssetRequestOut(BaseModel):
     asset_type: str
     reason: Optional[str]
     status: str
+    rejection_reason: Optional[str] = None
     request_date: datetime
     class Config:
         from_attributes = True
