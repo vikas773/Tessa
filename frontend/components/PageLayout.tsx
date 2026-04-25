@@ -88,8 +88,11 @@ export default function PageLayout({ children }: { children: React.ReactNode }) 
         
         <div className="flex items-center justify-between mb-10 px-2">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#6366F1] flex items-center justify-center font-black text-white shadow-[#6366F1]/20 shadow-lg text-lg shrink-0">
-              T
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-[#6366F1] to-indigo-600 rounded-xl blur-[2px] opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+              <div className="relative w-10 h-10 rounded-xl bg-[#1a2235] border border-white/10 flex items-center justify-center font-black text-white text-xl shadow-xl">
+                <span className="bg-clip-text text-transparent bg-gradient-to-br from-white to-white/50">T</span>
+              </div>
             </div>
             <h1 className="text-2xl font-black text-white tracking-tight">
               Tessa<span className="text-[#6366F1]">.</span>
