@@ -1,6 +1,11 @@
 import React from 'react';
 
-export const TableSkeleton = ({ rows = 5, columns = 3 }: { rows?: number, columns?: number }) => (
+interface TableSkeletonProps {
+  rows?: number;
+  columns?: number;
+}
+
+export const TableSkeleton: React.FC<TableSkeletonProps> = ({ rows = 5, columns = 3 }) => (
   <div className="w-full animate-pulse px-8 py-10 space-y-8">
     <div className="h-4 bg-white/5 rounded w-1/4"></div>
     <div className="space-y-4">
