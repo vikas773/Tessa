@@ -9,6 +9,7 @@ interface AssetRequest {
   asset_type: string;
   reason: string;
   status: string;
+  rejection_reason?: string;
   request_date: string;
 }
 
@@ -101,12 +102,21 @@ export default function MyRequestsPage() {
                         {new Date(req.request_date).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
                       </td>
                       <td className="px-8 py-6 text-center">
-                        <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border ${
+                        <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border flex items-center gap-2 ${
                           req.status === 'Approved' ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' : 
                           req.status === 'Rejected' ? 'text-red-400 bg-red-400/10 border-red-400/20' :
                           'text-orange-400 bg-orange-400/10 border-orange-400/20'
                         }`}>
                           {req.status}
+                          {req.status === 'Rejected' && req.rejection_reason && (
+                            <div className="relative group/reason">
+                              <svg className="w-3 h-3 cursor-help text-red-400/60 hover:text-red-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"></path></svg>
+                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-3 bg-[#0F1117] border border-white/10 rounded-xl shadow-2xl opacity-0 group-hover/reason:opacity-100 pointer-events-none transition-all z-50">
+                                <p className="text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-tighter">Admin Feedback:</p>
+                                <p className="text-[11px] text-white normal-case font-medium leading-relaxed">{req.rejection_reason}</p>
+                              </div>
+                            </div>
+                          )}
                         </span>
                       </td>
                     </tr>
